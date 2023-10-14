@@ -21,4 +21,8 @@ public class Place {
     private Long id;
 
     private String name;
+
+    public Place(String name) {
+        this.name = name;
+    }
 }
