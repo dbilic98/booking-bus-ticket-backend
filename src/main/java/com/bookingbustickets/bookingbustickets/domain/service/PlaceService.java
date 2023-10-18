@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class PlaceService {
 
-    public final PlaceRepository placeRepository;
+    private final PlaceRepository placeRepository;
 
     @Autowired
     public PlaceService(PlaceRepository placeRepository) {
