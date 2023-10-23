@@ -18,6 +18,4 @@ public class ResponsePlaceDto {
     public String getName() {
         return name;
     }
-
-
 }

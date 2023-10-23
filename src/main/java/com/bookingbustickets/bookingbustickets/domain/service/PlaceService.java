@@ -20,10 +20,10 @@ public class PlaceService {
         this.placeRepository = placeRepository;
     }
 
-    public Place findPlaceById(Long id) {
-        Optional<Place> optionalPlace = placeRepository.findById(id);
+    public Place findPlaceById(Long placeId) {
+        Optional<Place> optionalPlace = placeRepository.findById(placeId);
         if (optionalPlace.isEmpty()) {
-            throw new RuntimeException("Place ID is not found!");
+            throw new RuntimeException("Place with id " + placeId + " does not exist");
         }
         return optionalPlace.get();
     }
@@ -36,7 +36,7 @@ public class PlaceService {
     public Place updatePlace(Long placeId, RequestPlaceDto requestPlaceDto) {
         Optional<Place> optionalPlace = placeRepository.findById(placeId);
         if (optionalPlace.isEmpty()) {
-            throw new RuntimeException("Place with ID " + placeId + "' does not exist");
+            throw new RuntimeException("Place with id " + placeId + " does not exist");
         }
         Place updatedPlace = optionalPlace.get();
         updatedPlace.setName(requestPlaceDto.getName());
@@ -46,7 +46,7 @@ public class PlaceService {
     public void deletePlace(Long placeId) {
         Optional<Place> optionalPlace = placeRepository.findById(placeId);
         if (optionalPlace.isEmpty()) {
-            throw new RuntimeException("Place with ID" + placeId + "does not exists");
+            throw new RuntimeException("Place with id" + placeId + " does not exist");
         }
         placeRepository.deleteById(placeId);
     }

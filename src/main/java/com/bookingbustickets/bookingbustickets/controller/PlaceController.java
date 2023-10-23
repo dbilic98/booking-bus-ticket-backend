@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/place")
+@RequestMapping("/places")
 public class PlaceController {
 
     private final PlaceService placeService;
@@ -29,27 +29,20 @@ public class PlaceController {
     @GetMapping("/{id}")
     public ResponsePlaceDto findPlaceById(@PathVariable long id) {
         Place place = placeService.findPlaceById(id);
-        return new ResponsePlaceDto(
-                place.getId(),
-                place.getName());
+        return new ResponsePlaceDto(place.getId(), place.getName());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponsePlaceDto createPlace(@Valid @RequestBody RequestPlaceDto requestPlaceDto) {
         Place createdPlace = placeService.createPlace(requestPlaceDto);
-        return new ResponsePlaceDto(
-                createdPlace.getId(),
-                createdPlace.getName());
+        return new ResponsePlaceDto(createdPlace.getId(), createdPlace.getName());
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public ResponsePlaceDto updatePlace(@Valid @PathVariable("id") Long placeId, @RequestBody RequestPlaceDto requestPlaceDto) {
         Place updatedPlace = placeService.updatePlace(placeId, requestPlaceDto);
-        return new ResponsePlaceDto(
-                updatedPlace.getId(),
-                updatedPlace.getName());
+        return new ResponsePlaceDto(updatedPlace.getId(), updatedPlace.getName());
     }
 
     @DeleteMapping("/{id}")
@@ -58,19 +51,15 @@ public class PlaceController {
         placeService.deletePlace(placeId);
     }
 
-    @GetMapping()
+    @GetMapping
     public PaginatedResponse<ResponsePlaceDto> getAllPlaces(@RequestParam(name = "page") int pageNumber, @RequestParam(name = "size") int pageSize) {
         Page<Place> placePage = placeService.getPage(pageNumber - 1, pageSize);
         List<ResponsePlaceDto> pageResponseContent = new ArrayList<>();
-
         for (Place place : placePage) {
             ResponsePlaceDto responsePlaceDto = new ResponsePlaceDto(place.getId(), place.getName());
             pageResponseContent.add(responsePlaceDto);
         }
-
         PageImpl<ResponsePlaceDto> responsePlaceDtosPage = new PageImpl<>(pageResponseContent, placePage.getPageable(), placePage.getTotalElements());
         return new PaginatedResponse<>(responsePlaceDtosPage);
     }
-
-
 }
