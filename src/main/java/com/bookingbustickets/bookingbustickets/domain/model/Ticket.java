@@ -31,5 +31,4 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "returnRouteId")
     private Route returnRoute;
-
 }

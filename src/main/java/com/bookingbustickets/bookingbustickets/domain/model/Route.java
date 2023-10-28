@@ -14,10 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Route {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
+
     private String startPoint;
 
     private String endPoint;
@@ -28,6 +30,4 @@ public class Route {
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     private List<Schedule> scheduleList;
-
-
 }
