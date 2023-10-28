@@ -27,7 +27,6 @@ public class Schedule {
     private LocalTime arrivalTime;
 
     @ManyToOne
-    @JoinColumn(name = "routeId", nullable = false)
+    @JoinColumn(name = "routeId")
     private Route route;
-
 }

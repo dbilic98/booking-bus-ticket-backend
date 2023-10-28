@@ -19,4 +19,14 @@ public class Seat {
 
     @Column(columnDefinition = "TINYINT")
     private Short seatNumber;
+
+    private boolean isTaken;
+
+    @ManyToOne
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
+
+    public Seat(Short seatNumber) {
+        this.seatNumber = seatNumber;
+    }
 }
