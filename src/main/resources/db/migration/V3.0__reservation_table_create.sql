@@ -4,7 +4,5 @@ CREATE TABLE reservation
     date_of_reservation DATETIME                  NOT NULL,
     status              VARCHAR(20)               NOT NULL,
     price               DECIMAL(10, 2)            NOT NULL,
-    ticket_id BIGINT,
-    PRIMARY KEY (id),
-    FOREIGN KEY (ticket_id) REFERENCES ticket(id)
+    PRIMARY KEY (id)
 );
