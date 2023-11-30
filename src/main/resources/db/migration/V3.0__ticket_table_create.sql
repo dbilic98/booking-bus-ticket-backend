@@ -5,10 +5,7 @@ CREATE TABLE ticket
     date_of_departure DATETIME                  NOT NULL,
     one_way_route_id  BIGINT                    NOT NULL,
     return_route_id   BIGINT,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (one_way_route_id) REFERENCES route(id),
+    FOREIGN KEY (return_route_id) REFERENCES route(id)
 );
-ALTER TABLE ticket
-    ADD CONSTRAINT fk_ticket_one_way_route FOREIGN KEY (one_way_route_id) REFERENCES route (id);
-
-ALTER TABLE ticket
-    ADD CONSTRAINT fk_ticket_return_route FOREIGN KEY (return_route_id) REFERENCES route (id);
