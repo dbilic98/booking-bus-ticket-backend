@@ -25,6 +25,10 @@ public class Ticket {
     private Date dateOfDeparture;
 
     @ManyToOne
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
+
+    @ManyToOne
     @JoinColumn(name = "oneWayRouteId")
     private Route oneWayRoute;
 

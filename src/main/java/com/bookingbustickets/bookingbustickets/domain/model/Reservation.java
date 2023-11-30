@@ -25,10 +25,6 @@ public class Reservation {
 
     private String status;
 
-    @ManyToOne
-    @JoinColumn(name = "ticket_id")
-    private Ticket ticket;
-
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
