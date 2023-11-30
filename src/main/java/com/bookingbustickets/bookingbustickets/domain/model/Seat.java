@@ -26,7 +26,12 @@ public class Seat {
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
+    @ManyToOne
+    @JoinColumn(name = "bus_id")
+    private Bus bus;
+
     public Seat(Short seatNumber) {
         this.seatNumber = seatNumber;
+        this.isTaken = false;
     }
 }

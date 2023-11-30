@@ -1,13 +1,12 @@
 package com.bookingbustickets.bookingbustickets.domain.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,5 +23,12 @@ public class Bus {
 
     private String licensePlate;
 
-    private Integer seats;
+    @OneToMany(mappedBy = "bus")
+    private List<Seat> seats;
+
+    public Bus(String model, String licensePlate, List<Seat> seats) {
+        this.model = model;
+        this.licensePlate = licensePlate;
+        this.seats = seats;
+    }
 }
