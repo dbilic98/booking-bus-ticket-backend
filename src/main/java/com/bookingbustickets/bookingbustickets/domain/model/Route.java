@@ -15,19 +15,19 @@ import java.util.List;
 @AllArgsConstructor
 public class Route {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long id;
+        private Long id;
 
-    private String startPoint;
+        private String startPoint;
 
-    private String endPoint;
+        private String endPoint;
 
-    private BigDecimal price;
+        private BigDecimal basePrice;
 
-    private BigDecimal totalDistance;
+        private BigDecimal totalDistance;
 
-    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
-    private List<Schedule> scheduleList;
+        @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
+        private List<Schedule> scheduleList;
 }

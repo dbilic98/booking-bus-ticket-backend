@@ -7,28 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Reservation {
+public class PassengerCategoryPrice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date dateOfReservation;
-
-    private String status;
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "passenger_category_id")
     private PassengerCategory passengerCategory;
-
-    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
-    private List<Seat> seats;
 }
