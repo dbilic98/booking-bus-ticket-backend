@@ -22,7 +22,7 @@ public class BusService {
         int numberOfSeats = busRequest.getSeats();
         List<Seat> seats = new ArrayList<>();
         for (int i = 0; i < numberOfSeats; i++) {
-            Seat seat = new Seat((short) ++i);
+            Seat seat = new Seat((short) (i + 1));
             seats.add(seat);
         }
         Bus createdBus = new Bus(busRequest.getModel(), busRequest.getLicensePlate(), seats);
