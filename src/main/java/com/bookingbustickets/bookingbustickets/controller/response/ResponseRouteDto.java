@@ -4,17 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RouteResponse {
+public class ResponseRouteDto {
+
+    private Long id;
 
     private String startPoint;
 
     private String endPoint;
 
-    private double price;
+    private BigDecimal basePrice;
 
-    private double totalDistance;
+    private BigDecimal totalDistance;
 
 }
