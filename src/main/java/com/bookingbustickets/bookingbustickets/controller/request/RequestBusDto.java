@@ -5,12 +5,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class BusRequest {
+public class RequestBusDto {
 
     private final String model;
 
     private final String licensePlate;
 
     private final Integer seats;
-
 }
