@@ -29,4 +29,10 @@ public class Schedule {
     @ManyToOne
     @JoinColumn(name = "routeId")
     private Route route;
+
+    public Schedule(LocalDate scheduleDate, LocalTime departureTime, LocalTime arrivalTime) {
+        this.scheduleDate = scheduleDate;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+    }
 }
