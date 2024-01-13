@@ -14,9 +14,9 @@ import java.util.Optional;
 @Service
 public class ScheduleService {
 
-    private ScheduleRepository scheduleRepository;
+    private final ScheduleRepository scheduleRepository;
 
-    private RouteRepository routeRepository;
+    private final RouteRepository routeRepository;
 
     @Autowired
     public ScheduleService(ScheduleRepository scheduleRepository, RouteRepository routeRepository) {
