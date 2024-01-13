@@ -37,8 +37,7 @@ public class ScheduleService {
         if (optionalRoute.isEmpty()) {
             throw new RuntimeException("Route with the given ID is not found");
         }
-        Schedule createdSchedule = new Schedule(requestScheduleDto.getScheduleDate(), requestScheduleDto.getDepartureTime(), requestScheduleDto.getArrivalTime());
-        createdSchedule.setRoute(optionalRoute.get());
+        Schedule createdSchedule = new Schedule(requestScheduleDto.getScheduleDate(), requestScheduleDto.getDepartureTime(), requestScheduleDto.getArrivalTime(),optionalRoute.get());
         return scheduleRepository.save(createdSchedule);
     }
 
@@ -47,11 +46,6 @@ public class ScheduleService {
         updatedSchedule.setScheduleDate(requestScheduleDto.getScheduleDate());
         updatedSchedule.setDepartureTime(requestScheduleDto.getDepartureTime());
         updatedSchedule.setArrivalTime(requestScheduleDto.getArrivalTime());
-        Optional<Route> optionalRoute = routeRepository.findById(requestScheduleDto.getRouteId());
-        if (optionalRoute.isEmpty()) {
-            throw new RuntimeException("Route with the given ID is not found");
-        }
-        updatedSchedule.setRoute(optionalRoute.get());
         return scheduleRepository.save(updatedSchedule);
     }
 
