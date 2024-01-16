@@ -25,4 +25,9 @@ public class PassengerCategory {
     private String categoryName;
 
     private BigDecimal discountPercentage;
+
+    public PassengerCategory(String categoryName, BigDecimal discountPercentage) {
+        this.categoryName = categoryName;
+        this.discountPercentage = discountPercentage;
+    }
 }
