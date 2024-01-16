@@ -42,11 +42,11 @@ public class ScheduleService {
     }
 
     public Schedule updateSchedule(Long id, RequestScheduleDto requestScheduleDto) {
-        Schedule updatedSchedule = findScheduleById(id);
-        updatedSchedule.setScheduleDate(requestScheduleDto.getScheduleDate());
-        updatedSchedule.setDepartureTime(requestScheduleDto.getDepartureTime());
-        updatedSchedule.setArrivalTime(requestScheduleDto.getArrivalTime());
-        return scheduleRepository.save(updatedSchedule);
+        Schedule scheduleToUpdate = findScheduleById(id);
+        scheduleToUpdate.setScheduleDate(requestScheduleDto.getScheduleDate());
+        scheduleToUpdate.setDepartureTime(requestScheduleDto.getDepartureTime());
+        scheduleToUpdate.setArrivalTime(requestScheduleDto.getArrivalTime());
+        return scheduleRepository.save(scheduleToUpdate);
     }
 
     public void deleteSchedule(Long id) {
