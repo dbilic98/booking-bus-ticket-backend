@@ -41,6 +41,5 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSchedule(@PathVariable("id") Long id){
         scheduleService.deleteSchedule(id);
-
-        }
+    }
 }
