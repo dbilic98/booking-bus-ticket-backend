@@ -18,5 +18,5 @@ public class RequestScheduleDto {
 
     private final LocalTime arrivalTime;
 
-    private Long routeId;
+    private final Long routeId;
 }
