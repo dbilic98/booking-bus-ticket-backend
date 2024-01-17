@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/passenger_categories")
+@RequestMapping("/passenger-categories")
 public class PassengerCategoryController {
 
     private final PassengerCategoryService passengerCategoryService;
