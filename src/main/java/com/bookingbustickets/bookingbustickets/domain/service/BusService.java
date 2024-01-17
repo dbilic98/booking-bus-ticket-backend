@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class BusService {
 
-    private BusRepository busRepository;
+    private final BusRepository busRepository;
 
     public BusService(BusRepository busRepository) {
         this.busRepository = busRepository;
