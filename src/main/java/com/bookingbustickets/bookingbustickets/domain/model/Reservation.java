@@ -1,12 +1,12 @@
 package com.bookingbustickets.bookingbustickets.domain.model;
 
+import com.bookingbustickets.bookingbustickets.domain.enumeration.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +23,8 @@ public class Reservation {
 
     private Date dateOfReservation;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status;
 
     @ManyToOne
     @JoinColumn(name = "passenger_category_id")
@@ -31,4 +32,10 @@ public class Reservation {
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<Seat> seats;
+
+    public Reservation(Date dateOfReservation, ReservationStatus status, PassengerCategory passengerCategory) {
+        this.dateOfReservation = dateOfReservation;
+        this.status = status;
+        this.passengerCategory = passengerCategory;
+    }
 }
