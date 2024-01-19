@@ -15,6 +15,4 @@ public class RequestReservationDto {
     private final LocalDateTime dateOfReservation;
 
     private final ReservationStatus status;
-
-    private final Long passengerCategoryId;
 }
