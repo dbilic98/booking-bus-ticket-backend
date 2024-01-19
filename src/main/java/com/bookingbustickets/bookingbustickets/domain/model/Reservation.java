@@ -32,6 +32,9 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
+    private List<Ticket> tickets;
+
     public Reservation(LocalDateTime dateOfReservation, ReservationStatus status, PassengerCategory passengerCategory) {
         this.dateOfReservation = dateOfReservation;
         this.status = status;
