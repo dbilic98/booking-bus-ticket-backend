@@ -5,14 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 public class RequestReservationDto {
 
-    private final Date dateOfReservation;
+    private final LocalDateTime dateOfReservation;
 
     private final ReservationStatus status;
 

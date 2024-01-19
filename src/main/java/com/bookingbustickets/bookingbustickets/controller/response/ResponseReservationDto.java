@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -14,7 +14,7 @@ public class ResponseReservationDto {
 
     private Long id;
 
-    private Date dateOfReservation;
+    private LocalDateTime dateOfReservation;
 
     private ReservationStatus status;
 

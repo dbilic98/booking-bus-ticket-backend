@@ -7,9 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -21,7 +20,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date dateOfReservation;
+    private LocalDateTime dateOfReservation;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
@@ -33,7 +32,7 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
-    public Reservation(Date dateOfReservation, ReservationStatus status, PassengerCategory passengerCategory) {
+    public Reservation(LocalDateTime dateOfReservation, ReservationStatus status, PassengerCategory passengerCategory) {
         this.dateOfReservation = dateOfReservation;
         this.status = status;
         this.passengerCategory = passengerCategory;
