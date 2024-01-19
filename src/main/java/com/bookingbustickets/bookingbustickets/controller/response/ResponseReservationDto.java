@@ -1,6 +1,7 @@
 package com.bookingbustickets.bookingbustickets.controller.response;
 
 import com.bookingbustickets.bookingbustickets.domain.enumeration.ReservationStatus;
+import com.bookingbustickets.bookingbustickets.domain.model.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,4 @@ public class ResponseReservationDto {
     private LocalDateTime dateOfReservation;
 
     private ReservationStatus status;
-
-    private Long passengerCategoryId;
 }

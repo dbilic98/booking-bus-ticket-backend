@@ -20,21 +20,21 @@ public class ReservationController {
     @GetMapping("/{id}")
     public ResponseReservationDto findReservationById(@PathVariable Long id){
         Reservation reservation = reservationService.findReservationById(id);
-        return new ResponseReservationDto(reservation.getId(), reservation.getDateOfReservation(), reservation.getStatus(),reservation.getPassengerCategory().getId());
+        return new ResponseReservationDto(reservation.getId(), reservation.getDateOfReservation(), reservation.getStatus());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseReservationDto createReservation(@RequestBody RequestReservationDto requestReservationDto){
         Reservation createdReservation = reservationService.createReservation(requestReservationDto);
-        return new ResponseReservationDto(createdReservation.getId(), createdReservation.getDateOfReservation(), createdReservation.getStatus(), createdReservation.getPassengerCategory().getId());
+        return new ResponseReservationDto(createdReservation.getId(), createdReservation.getDateOfReservation(), createdReservation.getStatus());
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseReservationDto updateReservation(@PathVariable("id") Long id, @RequestBody RequestReservationDto requestReservationDto){
         Reservation updatedReservation = reservationService.updateReservation(id, requestReservationDto);
-        return new ResponseReservationDto(updatedReservation.getId(),updatedReservation.getDateOfReservation(), updatedReservation.getStatus(), updatedReservation.getPassengerCategory().getId());
+        return new ResponseReservationDto(updatedReservation.getId(),updatedReservation.getDateOfReservation(), updatedReservation.getStatus());
     }
 
     @DeleteMapping("/{id}")

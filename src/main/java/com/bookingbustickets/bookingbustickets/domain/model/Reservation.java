@@ -25,19 +25,14 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "passenger_category_id")
-    private PassengerCategory passengerCategory;
-
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<Ticket> tickets;
 
-    public Reservation(LocalDateTime dateOfReservation, ReservationStatus status, PassengerCategory passengerCategory) {
+    public Reservation(LocalDateTime dateOfReservation, ReservationStatus status) {
         this.dateOfReservation = dateOfReservation;
         this.status = status;
-        this.passengerCategory = passengerCategory;
     }
 }
