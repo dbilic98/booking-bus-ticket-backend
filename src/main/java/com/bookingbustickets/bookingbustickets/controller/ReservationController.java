@@ -19,14 +19,20 @@ public class ReservationController {
     @GetMapping("/{id}")
     public ResponseReservationDto findReservationById(@PathVariable Long id){
         Reservation reservation = reservationService.findReservationById(id);
-        return new ResponseReservationDto(reservation.getId(), reservation.getDateOfReservation(), reservation.getStatus());
+        return new ResponseReservationDto(reservation.getId(), reservation.getDateOfReservation(), reservation.getStatus(), reservation.getTickets());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseReservationDto createReservation(){
         Reservation createdReservation = reservationService.createReservation();
-        return new ResponseReservationDto(createdReservation.getId(), createdReservation.getDateOfReservation(), createdReservation.getStatus());
+        return new ResponseReservationDto(createdReservation.getId(), createdReservation.getDateOfReservation(), createdReservation.getStatus(), createdReservation.getTickets());
+    }
+
+    @PutMapping("/confirm/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void confirmReservation(@PathVariable("id") Long id){
+        reservationService.confirmReservation(id);
     }
 
     @DeleteMapping("/{id}")
