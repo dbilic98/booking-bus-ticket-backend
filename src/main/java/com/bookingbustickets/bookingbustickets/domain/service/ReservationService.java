@@ -1,11 +1,12 @@
 package com.bookingbustickets.bookingbustickets.domain.service;
 
-import com.bookingbustickets.bookingbustickets.controller.request.RequestReservationDto;
+import com.bookingbustickets.bookingbustickets.domain.enumeration.ReservationStatus;
 import com.bookingbustickets.bookingbustickets.domain.model.Reservation;
 import com.bookingbustickets.bookingbustickets.domain.repository.ReservationRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -25,16 +26,9 @@ public class ReservationService {
         return optionalReservation.get();
     }
 
-    public Reservation createReservation(RequestReservationDto requestReservationDto){
-        Reservation createdReservation = new Reservation(requestReservationDto.getDateOfReservation(), requestReservationDto.getStatus());
+    public Reservation createReservation(){
+        Reservation createdReservation = new Reservation(LocalDateTime.now(), ReservationStatus.PENDING);
         return reservationRepository.save(createdReservation);
-    }
-
-    public Reservation updateReservation(Long id, RequestReservationDto requestReservationDto){
-        Reservation reservationToUpdate = findReservationById(id);
-        reservationToUpdate.setDateOfReservation(requestReservationDto.getDateOfReservation());
-        reservationToUpdate.setStatus(requestReservationDto.getStatus());
-        return reservationRepository.save(reservationToUpdate);
     }
 
     public void deleteReservation(Long id){

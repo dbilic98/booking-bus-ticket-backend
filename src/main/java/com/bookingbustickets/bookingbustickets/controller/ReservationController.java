@@ -1,6 +1,5 @@
 package com.bookingbustickets.bookingbustickets.controller;
 
-import com.bookingbustickets.bookingbustickets.controller.request.RequestReservationDto;
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseReservationDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Reservation;
 import com.bookingbustickets.bookingbustickets.domain.service.ReservationService;
@@ -25,16 +24,9 @@ public class ReservationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseReservationDto createReservation(@RequestBody RequestReservationDto requestReservationDto){
-        Reservation createdReservation = reservationService.createReservation(requestReservationDto);
+    public ResponseReservationDto createReservation(){
+        Reservation createdReservation = reservationService.createReservation();
         return new ResponseReservationDto(createdReservation.getId(), createdReservation.getDateOfReservation(), createdReservation.getStatus());
-    }
-
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseReservationDto updateReservation(@PathVariable("id") Long id, @RequestBody RequestReservationDto requestReservationDto){
-        Reservation updatedReservation = reservationService.updateReservation(id, requestReservationDto);
-        return new ResponseReservationDto(updatedReservation.getId(),updatedReservation.getDateOfReservation(), updatedReservation.getStatus());
     }
 
     @DeleteMapping("/{id}")
@@ -43,3 +35,5 @@ public class ReservationController {
         reservationService.deleteReservation(id);
     }
 }
+
+
