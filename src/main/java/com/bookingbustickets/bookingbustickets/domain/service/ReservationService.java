@@ -41,6 +41,10 @@ public class ReservationService {
         reservationRepository.save(reservation);
     }
 
+    public void cancelPendingReservations() {
+        reservationRepository.cancelPendingReservations();
+    }
+
     public void deleteReservation(Long id) {
         try {
             reservationRepository.deleteById(id);
@@ -60,4 +64,5 @@ public class ReservationService {
             throw new RuntimeException("Reservation is older than " + ALLOWED_MINUTES + " minutes. Can not be confirmed.");
         }
     }
+
 }
