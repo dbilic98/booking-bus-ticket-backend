@@ -17,7 +17,7 @@ public class ResponseRouteDto {
 
     private String endPoint;
 
-    private BigDecimal basePrice;
+    private float basePrice;
 
     private BigDecimal totalDistance;
 

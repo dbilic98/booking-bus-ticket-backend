@@ -26,14 +26,14 @@ public class Route {
 
     private String endPoint;
 
-    private BigDecimal basePrice;
+    private float basePrice;
 
     private BigDecimal totalDistance;
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     private List<Schedule> scheduleList;
 
-    public Route(String startPoint, String endPoint, BigDecimal basePrice, BigDecimal totalDistance) {
+    public Route(String startPoint, String endPoint, float basePrice, BigDecimal totalDistance) {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.basePrice = basePrice;

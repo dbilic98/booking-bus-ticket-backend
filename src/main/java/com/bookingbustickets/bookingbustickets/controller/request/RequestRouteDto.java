@@ -15,7 +15,7 @@ public class RequestRouteDto {
 
     private final String endPoint;
 
-    private final BigDecimal basePrice;
+    private final float basePrice;
 
     private final BigDecimal totalDistance;
 }
