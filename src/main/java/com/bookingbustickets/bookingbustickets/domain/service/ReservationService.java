@@ -42,7 +42,8 @@ public class ReservationService {
     }
 
     public void cancelPendingReservations() {
-        reservationRepository.cancelPendingReservations();
+        LocalDateTime thresholdDatetime = LocalDateTime.now().minusMinutes(ALLOWED_MINUTES);
+        reservationRepository.cancelPendingReservations(thresholdDatetime);
     }
 
     public void deleteReservation(Long id) {
