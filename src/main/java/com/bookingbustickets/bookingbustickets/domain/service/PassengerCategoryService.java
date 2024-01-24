@@ -4,6 +4,9 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestPasseng
 import com.bookingbustickets.bookingbustickets.domain.model.PassengerCategory;
 import com.bookingbustickets.bookingbustickets.domain.repository.PassengerCategoryRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -44,4 +47,9 @@ public class PassengerCategoryService {
             throw new RuntimeException("Passenger Category with id " + id + "does not exist");
         }
     }
+
+        public Page<PassengerCategory> getAllPassengerCategories(int pageNumber, int pageSize) {
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
+            return passengerCategoryRepository.findAll(pageable);
+        }
 }

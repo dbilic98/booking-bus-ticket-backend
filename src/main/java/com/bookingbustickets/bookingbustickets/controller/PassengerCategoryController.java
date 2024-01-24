@@ -4,6 +4,7 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestPasseng
 import com.bookingbustickets.bookingbustickets.controller.response.ResponsePassengerCategoryDto;
 import com.bookingbustickets.bookingbustickets.domain.model.PassengerCategory;
 import com.bookingbustickets.bookingbustickets.domain.service.PassengerCategoryService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,5 +42,12 @@ public class PassengerCategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePassengerCategory(@PathVariable("id") Long id) {
         passengerCategoryService.deletePassengerCategory(id);
+    }
+
+    @GetMapping
+    public Page<PassengerCategory> getPassengerCategories(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return passengerCategoryService.getAllPassengerCategories(pageNumber, pageSize);
     }
 }
