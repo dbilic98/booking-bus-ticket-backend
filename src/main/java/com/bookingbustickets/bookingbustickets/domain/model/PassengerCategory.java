@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Entity
 @Getter
 @Setter
@@ -24,9 +22,9 @@ public class PassengerCategory {
 
     private String categoryName;
 
-    private BigDecimal discountPercentage;
+    private float discountPercentage;
 
-    public PassengerCategory(String categoryName, BigDecimal discountPercentage) {
+    public PassengerCategory(String categoryName, float discountPercentage) {
         this.categoryName = categoryName;
         this.discountPercentage = discountPercentage;
     }
