@@ -48,8 +48,8 @@ public class PassengerCategoryService {
         }
     }
 
-        public Page<PassengerCategory> getAllPassengerCategories(int pageNumber, int pageSize) {
-            Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            return passengerCategoryRepository.findAll(pageable);
-        }
+    public Page<PassengerCategory> getAllPassengerCategories(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return passengerCategoryRepository.findAll(pageable);
+    }
 }
