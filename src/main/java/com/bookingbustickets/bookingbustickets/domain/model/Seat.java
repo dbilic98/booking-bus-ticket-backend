@@ -34,4 +34,11 @@ public class Seat {
         this.seatNumber = seatNumber;
         this.isTaken = false;
     }
+
+    public void markAsTaken() {
+        if (isTaken) {
+            throw new IllegalArgumentException("Seat is already taken.");
+        }
+        isTaken = true;
+    }
 }

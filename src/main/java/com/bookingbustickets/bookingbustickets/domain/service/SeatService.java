@@ -15,5 +15,15 @@ public class SeatService {
         this.seatRepository = seatRepository;
     }
 
+    public void reserveSeat(Long id) {
+        Optional<Seat> optionalSeat = seatRepository.findById(id);
+        if (optionalSeat.isEmpty()) {
+            throw new RuntimeException("Seat with ID " + id + " does not exist");
+        }
+        Seat selectedSeat = optionalSeat.get();
+        selectedSeat.markAsTaken();
+
+        seatRepository.save(selectedSeat);
+    }
 }
 
