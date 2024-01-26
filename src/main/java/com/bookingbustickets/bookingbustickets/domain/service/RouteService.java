@@ -4,6 +4,9 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestRouteDt
 import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -45,5 +48,10 @@ public class RouteService {
         } catch (EmptyResultDataAccessException e) {
             throw new RuntimeException("Route with ID " + id + "does not exist");
         }
+    }
+
+    public Page<Route> getAllRoute(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return routeRepository.findAll(pageable);
     }
 }

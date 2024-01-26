@@ -4,6 +4,7 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestRouteDt
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseRouteDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.service.RouteService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,5 +42,12 @@ public class RouteController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRoute(@PathVariable("id") Long id) {
         routeService.deleteRoute(id);
+    }
+
+    @GetMapping
+    public Page<Route> getAllRoute(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return routeService.getAllRoute(pageNumber, pageSize);
     }
 }
