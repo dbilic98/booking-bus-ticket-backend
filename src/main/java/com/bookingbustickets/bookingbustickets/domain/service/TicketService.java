@@ -1,14 +1,8 @@
 package com.bookingbustickets.bookingbustickets.domain.service;
 
 import com.bookingbustickets.bookingbustickets.controller.request.RequestTicketDto;
-import com.bookingbustickets.bookingbustickets.domain.model.PassengerCategory;
-import com.bookingbustickets.bookingbustickets.domain.model.Reservation;
-import com.bookingbustickets.bookingbustickets.domain.model.Route;
-import com.bookingbustickets.bookingbustickets.domain.model.Ticket;
-import com.bookingbustickets.bookingbustickets.domain.repository.PassengerCategoryRepository;
-import com.bookingbustickets.bookingbustickets.domain.repository.ReservationRepository;
-import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
-import com.bookingbustickets.bookingbustickets.domain.repository.TicketRepository;
+import com.bookingbustickets.bookingbustickets.domain.model.*;
+import com.bookingbustickets.bookingbustickets.domain.repository.*;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,17 +23,20 @@ public class TicketService {
 
     private final RouteRepository routeRepository;
 
-    public TicketService(TicketRepository ticketRepository, ReservationRepository reservationRepository, PassengerCategoryRepository passengerCategoryRepository, RouteRepository routeRepository) {
+    private final ScheduleRepository scheduleRepository;
+
+    public TicketService(TicketRepository ticketRepository, ReservationRepository reservationRepository, PassengerCategoryRepository passengerCategoryRepository, RouteRepository routeRepository, ScheduleRepository scheduleRepository) {
         this.ticketRepository = ticketRepository;
         this.reservationRepository = reservationRepository;
         this.passengerCategoryRepository = passengerCategoryRepository;
         this.routeRepository = routeRepository;
+        this.scheduleRepository = scheduleRepository;
     }
 
     public Ticket findTicketById(Long id) {
         Optional<Ticket> optionalTicket = ticketRepository.findById(id);
         if (optionalTicket.isEmpty()) {
-            throw new RuntimeException("Ticket with ID " + id + "does not found");
+            throw new RuntimeException("Ticket with ID " + id + "does not exist");
         }
         return optionalTicket.get();
     }
@@ -49,7 +46,25 @@ public class TicketService {
         return ticketRepository.findAll(pageable);
     }
 
+    public void calculatePrice(Ticket ticket, Route oneWayRoute, Route returnRoute, PassengerCategory passengerCategory) {
+        float basePrice;
+        if (returnRoute != null) {
+            basePrice = returnRoute.getBasePrice() * 2;
+        } else {
+            basePrice = oneWayRoute.getBasePrice();
+        }
+        float discountPercentage = passengerCategory.getDiscountPercentage();
+
+        float calculatedPrice = basePrice * discountPercentage;
+        ticket.setPrice(calculatedPrice);
+    }
+
     public Ticket createTicket(RequestTicketDto requestTicketDto) {
+        Optional<Schedule> optionalSchedule = scheduleRepository.findById(requestTicketDto.getScheduleDateId());
+        if (optionalSchedule.isEmpty()) {
+            throw new RuntimeException("Schedule with the given ID is not found");
+        }
+
         Optional<Reservation> optionalReservation = reservationRepository.findById(requestTicketDto.getReservationId());
         if (optionalReservation.isEmpty()) {
             throw new RuntimeException("Reservation with the given ID is not found");
@@ -76,26 +91,15 @@ public class TicketService {
         }
 
         Ticket ticket = new Ticket();
-        ticket.calculatePrice(optionalOneWayRoute.get(), optionalReturnRoute.orElse(null), optionalPassengerCategory.get());
+        calculatePrice(ticket, optionalOneWayRoute.get(), optionalReturnRoute.orElse(null), optionalPassengerCategory.get());
 
+        ticket.setSchedule(optionalSchedule.get());
         ticket.setReservation(optionalReservation.get());
         ticket.setOneWayRoute(optionalOneWayRoute.get());
-        ticket.setReturnRoute(optionalReturnRoute.orElse(null));
         ticket.setPassengerCategory(optionalPassengerCategory.get());
-
-        if (requestTicketDto.getDateOfDeparture() != null) {
-            ticket.setDateOfDeparture(requestTicketDto.getDateOfDeparture());
-        } else {
-            throw new RuntimeException("Date of departure is required.");
-        }
+        ticket.setReturnRoute(optionalReturnRoute.orElse(null));
 
         return ticketRepository.save(ticket);
-    }
-
-    public Ticket updateTicket(Long id, RequestTicketDto requestTicketDto) {
-        Ticket ticketToUpdate = findTicketById(id);
-        ticketToUpdate.setDateOfDeparture(requestTicketDto.getDateOfDeparture());
-        return ticketRepository.save(ticketToUpdate);
     }
 
     public void deleteTicket(@PathVariable("id") Long id) {
@@ -106,3 +110,4 @@ public class TicketService {
         }
     }
 }
+
