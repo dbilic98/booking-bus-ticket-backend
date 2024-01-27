@@ -21,8 +21,11 @@ public class SeatService {
             throw new RuntimeException("Seat with ID " + id + " does not exist");
         }
         Seat selectedSeat = optionalSeat.get();
-        selectedSeat.markAsTaken();
 
+        if (selectedSeat.isTaken()) {
+            throw new IllegalArgumentException("Seat is already taken.");
+        }
+        selectedSeat.setTaken(true);
         seatRepository.save(selectedSeat);
     }
 }
