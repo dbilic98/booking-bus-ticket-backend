@@ -1,5 +1,6 @@
 package com.bookingbustickets.bookingbustickets.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Schedule {
 
     private LocalTime arrivalTime;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "route_id")
     private Route route;
