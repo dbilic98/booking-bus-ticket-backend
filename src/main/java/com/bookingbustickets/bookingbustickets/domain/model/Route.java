@@ -22,22 +22,25 @@ public class Route {
 
     private Long id;
 
-    private String startPoint;
-
-    private String endPoint;
-
     private float basePrice;
 
     private BigDecimal totalDistance;
 
+    @ManyToOne
+    @JoinColumn(name = "start_place_id")
+    private Place startPlace;
+
+    @ManyToOne
+    @JoinColumn(name = "end_place_id")
+    private Place endPlace;
+
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     private List<Schedule> scheduleList;
 
-    public Route(String startPoint, String endPoint, float basePrice, BigDecimal totalDistance) {
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
+    public Route(float basePrice, BigDecimal totalDistance, Place startPlace, Place endPlace) {
         this.basePrice = basePrice;
         this.totalDistance = totalDistance;
+        this.startPlace = startPlace;
+        this.endPlace = endPlace;
     }
-
 }

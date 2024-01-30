@@ -21,21 +21,21 @@ public class RouteController {
     @GetMapping("/{id}")
     public ResponseRouteDto findRouteById(@PathVariable Long id) {
         Route route = routeService.findRouteById(id);
-        return new ResponseRouteDto(route.getId(), route.getStartPoint(), route.getEndPoint(), route.getBasePrice(), route.getTotalDistance());
+        return new ResponseRouteDto(route.getId(), route.getBasePrice(), route.getTotalDistance(), route.getStartPlace().getId(), route.getEndPlace().getId());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseRouteDto createRoute(@RequestBody RequestRouteDto requestRouteDto) {
         Route createdRoute = routeService.createRoute(requestRouteDto);
-        return new ResponseRouteDto(createdRoute.getId(), createdRoute.getStartPoint(), createdRoute.getEndPoint(), createdRoute.getBasePrice(), createdRoute.getTotalDistance());
+        return new ResponseRouteDto(createdRoute.getId(), createdRoute.getBasePrice(), createdRoute.getTotalDistance(), createdRoute.getStartPlace().getId(), createdRoute.getEndPlace().getId());
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseRouteDto updateRoute(@PathVariable("id") Long id, @RequestBody RequestRouteDto requestRouteDto) {
         Route updatedRoute = routeService.updateRoute(id, requestRouteDto);
-        return new ResponseRouteDto(updatedRoute.getId(), updatedRoute.getStartPoint(), updatedRoute.getEndPoint(), updatedRoute.getBasePrice(), updatedRoute.getTotalDistance());
+        return new ResponseRouteDto(updatedRoute.getId(), updatedRoute.getBasePrice(), updatedRoute.getTotalDistance(), updatedRoute.getStartPlace().getId(), updatedRoute.getEndPlace().getId());
     }
 
     @DeleteMapping("/{id}")

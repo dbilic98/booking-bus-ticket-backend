@@ -1,7 +1,9 @@
 package com.bookingbustickets.bookingbustickets.domain.service;
 
 import com.bookingbustickets.bookingbustickets.controller.request.RequestRouteDto;
+import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.model.Route;
+import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
 import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -14,10 +16,13 @@ import java.util.Optional;
 @Service
 public class RouteService {
 
-    private RouteRepository routeRepository;
+    private final RouteRepository routeRepository;
 
-    public RouteService(RouteRepository routeRepository) {
+    private final PlaceRepository placeRepository;
+
+    public RouteService(RouteRepository routeRepository, PlaceRepository placeRepository) {
         this.routeRepository = routeRepository;
+        this.placeRepository = placeRepository;
     }
 
     public Route findRouteById(Long id) {
@@ -29,14 +34,18 @@ public class RouteService {
     }
 
     public Route createRoute(RequestRouteDto requestRouteDto) {
-        Route createdRoute = new Route(requestRouteDto.getStartPoint(), requestRouteDto.getEndPoint(), requestRouteDto.getBasePrice(), requestRouteDto.getTotalDistance());
+        Optional<Place> optionalStartPlace = placeRepository.findById(requestRouteDto.getStartPlaceId());
+        Optional<Place> optionalEndPlace = placeRepository.findById(requestRouteDto.getEndPlaceId());
+
+        if (optionalStartPlace.isEmpty() || optionalEndPlace.isEmpty()) {
+            throw new RuntimeException("Place with the given ID is not found");
+        }
+        Route createdRoute = new Route(requestRouteDto.getBasePrice(), requestRouteDto.getTotalDistance(), optionalStartPlace.get(), optionalEndPlace.get());
         return routeRepository.save(createdRoute);
     }
 
     public Route updateRoute(Long id, RequestRouteDto requestRouteDto) {
         Route updatedRoute = findRouteById(id);
-        updatedRoute.setStartPoint(requestRouteDto.getStartPoint());
-        updatedRoute.setEndPoint(requestRouteDto.getEndPoint());
         updatedRoute.setBasePrice(requestRouteDto.getBasePrice());
         updatedRoute.setTotalDistance(requestRouteDto.getTotalDistance());
         return routeRepository.save(updatedRoute);

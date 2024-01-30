@@ -11,11 +11,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class RequestRouteDto {
 
-    private final String startPoint;
-
-    private final String endPoint;
-
     private final float basePrice;
 
     private final BigDecimal totalDistance;
+
+    private final long startPlaceId;
+
+    private final long endPlaceId;
 }
