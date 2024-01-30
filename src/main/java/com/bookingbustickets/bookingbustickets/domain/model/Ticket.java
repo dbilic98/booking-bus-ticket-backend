@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Entity
 @Getter
 @Setter
@@ -22,19 +20,21 @@ public class Ticket {
 
     private float price;
 
-    private Date dateOfDeparture;
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
 
     @ManyToOne
     @JoinColumn(name = "reservation_id")
-    @JsonIgnore
     private Reservation reservation;
 
     @ManyToOne
-    @JoinColumn(name = "oneWayRouteId")
+    @JoinColumn(name = "one_way_route_id ")
     private Route oneWayRoute;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "returnRouteId")
+    @JoinColumn(name = "return_route_id ")
     private Route returnRoute;
 
     @ManyToOne
