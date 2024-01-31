@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/routes")
 public class RouteController {
 
-    private RouteService routeService;
+    private final RouteService routeService;
 
     public RouteController(RouteService routeService) {
         this.routeService = routeService;
@@ -48,9 +48,7 @@ public class RouteController {
     }
 
     @GetMapping
-    public Page<Route> getAllRoute(
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize) {
+    public Page<Route> getAllRoute(@RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "10") int pageSize) {
         return routeService.getAllRoute(pageNumber, pageSize);
     }
 
@@ -59,6 +57,11 @@ public class RouteController {
             @RequestParam Long startPlaceId,
             @RequestParam Long endPlaceId) {
         List<Route> routeList = routeService.findRoutesByStartAndEndPlace(startPlaceId, endPlaceId);
-        return ResponseEntity.ok(routeList);
+
+        if (routeList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(routeList, HttpStatus.OK);
+        }
     }
 }
