@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,4 +60,12 @@ public class ScheduleService {
             throw new RuntimeException("Schedule with ID " + id + "does not exist");
         }
     }
+
+    public List<Schedule> findFutureDates() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDate currentDate = currentDateTime.toLocalDate();
+        LocalTime currentTime = currentDateTime.toLocalTime();
+        return scheduleRepository.findFutureDates(currentDate, currentTime);
+    }
+
 }
