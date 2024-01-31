@@ -6,7 +6,10 @@ import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.service.RouteService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/routes")
@@ -49,5 +52,13 @@ public class RouteController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize) {
         return routeService.getAllRoute(pageNumber, pageSize);
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<List<Route>> findRoutesByStartAndEndPlace(
+            @RequestParam Long startPlaceId,
+            @RequestParam Long endPlaceId) {
+        List<Route> routeList = routeService.findRoutesByStartAndEndPlace(startPlaceId, endPlaceId);
+        return ResponseEntity.ok(routeList);
     }
 }

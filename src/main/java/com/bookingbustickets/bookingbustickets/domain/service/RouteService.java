@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,5 +63,10 @@ public class RouteService {
     public Page<Route> getAllRoute(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return routeRepository.findAll(pageable);
+    }
+
+    public List<Route> findRoutesByStartAndEndPlace(Long startPlaceId, Long endPlaceId){
+        return routeRepository.findByStartPlaceAndEndPlace(startPlaceId, endPlaceId);
+
     }
 }
