@@ -3,6 +3,7 @@ package com.bookingbustickets.bookingbustickets.domain.service;
 import com.bookingbustickets.bookingbustickets.controller.request.RequestPlaceDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
+import com.bookingbustickets.bookingbustickets.exception.PlaceNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class PlaceService {
     public Place findPlaceById(Long id) {
         Optional<Place> placeOptional = placeRepository.findById(id);
         if (placeOptional.isEmpty()) {
-            throw new RuntimeException("Place with ID " + id + " does not exist");
+            throw new PlaceNotFoundException("Place with ID " + id + " is not found");
         }
         return placeOptional.get();
     }
@@ -40,7 +41,7 @@ public class PlaceService {
         try {
             deletePlace(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Place with ID " + id + " does not exist");
+            throw new PlaceNotFoundException("Place with ID " + id + " is not found");
         }
     }
 }

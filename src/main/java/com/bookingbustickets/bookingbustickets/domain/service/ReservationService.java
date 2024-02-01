@@ -2,6 +2,7 @@ package com.bookingbustickets.bookingbustickets.domain.service;
 
 import com.bookingbustickets.bookingbustickets.domain.model.Reservation;
 import com.bookingbustickets.bookingbustickets.domain.repository.ReservationRepository;
+import com.bookingbustickets.bookingbustickets.exception.ReservationNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class ReservationService {
     public Reservation findReservationById(Long id) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
         if (optionalReservation.isEmpty()) {
-            throw new RuntimeException("Reservation with ID " + id + " does not exist");
+            throw new ReservationNotFoundException("Reservation with ID " + id + " is not found");
         }
         return optionalReservation.get();
     }
@@ -50,19 +51,19 @@ public class ReservationService {
         try {
             reservationRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Reservation with id " + id + "does not exist");
+            throw new ReservationNotFoundException("Reservation with ID " + id + " is not found");
         }
     }
 
     private void validateReservation(Reservation reservation) {
         if (!reservation.hasAnyTickets()) {
-            throw new RuntimeException("Reservation with ID " + reservation.getId() + " does not have any tickets");
+            throw new ReservationNotFoundException("Reservation with ID " + reservation.getId() + " does not have any tickets");
         }
         if (!reservation.isPending()) {
-            throw new RuntimeException("The reservation status is not pending");
+            throw new ReservationNotFoundException("The reservation status is not pending");
         }
         if (reservation.isOlderThanDefinedThreshold(ALLOWED_MINUTES)) {
-            throw new RuntimeException("Reservation is older than " + ALLOWED_MINUTES + " minutes. Can not be confirmed.");
+            throw new ReservationNotFoundException("Reservation is older than " + ALLOWED_MINUTES + " minutes. Can not be confirmed.");
         }
     }
 

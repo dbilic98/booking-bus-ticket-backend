@@ -5,6 +5,7 @@ import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.model.Schedule;
 import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
 import com.bookingbustickets.bookingbustickets.domain.repository.ScheduleRepository;
+import com.bookingbustickets.bookingbustickets.exception.ScheduleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class ScheduleService {
     public Schedule findScheduleById(Long id) {
         Optional<Schedule> optionalSchedule = scheduleRepository.findById(id);
         if (optionalSchedule.isEmpty()) {
-            throw new RuntimeException("Schedule with ID " + id + " is not found");
+            throw new ScheduleNotFoundException("Schedule with ID " + id + " is not found");
         }
         return optionalSchedule.get();
     }
@@ -35,7 +36,7 @@ public class ScheduleService {
     public Schedule createSchedule(RequestScheduleDto requestScheduleDto) {
         Optional<Route> optionalRoute = routeRepository.findById(requestScheduleDto.getRouteId());
         if (optionalRoute.isEmpty()) {
-            throw new RuntimeException("Route with the given ID is not found");
+            throw new ScheduleNotFoundException("Route with the given ID is not found");
         }
         Schedule createdSchedule = new Schedule(requestScheduleDto.getScheduleDate(), requestScheduleDto.getDepartureTime(), requestScheduleDto.getArrivalTime(),optionalRoute.get());
         return scheduleRepository.save(createdSchedule);
@@ -53,7 +54,7 @@ public class ScheduleService {
         try {
             scheduleRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Schedule with ID " + id + "does not exist");
+            throw new ScheduleNotFoundException("Schedule with ID " + id + " is not found");
         }
     }
 }

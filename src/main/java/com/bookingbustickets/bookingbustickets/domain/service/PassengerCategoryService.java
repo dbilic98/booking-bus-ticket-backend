@@ -3,6 +3,7 @@ package com.bookingbustickets.bookingbustickets.domain.service;
 import com.bookingbustickets.bookingbustickets.controller.request.RequestPassengerCategoryDto;
 import com.bookingbustickets.bookingbustickets.domain.model.PassengerCategory;
 import com.bookingbustickets.bookingbustickets.domain.repository.PassengerCategoryRepository;
+import com.bookingbustickets.bookingbustickets.exception.PassengerCategoryNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,7 @@ public class PassengerCategoryService {
     public PassengerCategory findPassengerCategoryById(Long id) {
         Optional<PassengerCategory> optionalPassengerCategory = passengerCategoryRepository.findById(id);
         if (optionalPassengerCategory.isEmpty()) {
-            throw new RuntimeException("Passenger Category with ID " + id + " does not exist");
+            throw new PassengerCategoryNotFoundException("Passenger Category with ID " + id + " is not found");
         }
         return optionalPassengerCategory.get();
     }
@@ -44,7 +45,7 @@ public class PassengerCategoryService {
         try {
             passengerCategoryRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Passenger Category with id " + id + "does not exist");
+            throw new PassengerCategoryNotFoundException("Passenger Category with ID " + id + " is not found");
         }
     }
 

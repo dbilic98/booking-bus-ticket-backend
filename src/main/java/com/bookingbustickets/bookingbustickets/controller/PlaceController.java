@@ -4,6 +4,7 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestPlaceDt
 import com.bookingbustickets.bookingbustickets.controller.response.ResponsePlaceDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.service.PlaceService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,14 +26,14 @@ public class PlaceController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponsePlaceDto createPlace(@RequestBody RequestPlaceDto requestPlaceDto) {
+    public ResponsePlaceDto createPlace(@Valid @RequestBody RequestPlaceDto requestPlaceDto) {
         Place createdPlace = placeService.createPlace(requestPlaceDto);
         return new ResponsePlaceDto(createdPlace.getId(), createdPlace.getPlaceName());
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponsePlaceDto updatePlace(@PathVariable("id") Long id, @RequestBody RequestPlaceDto requestPlaceDto) {
+    public ResponsePlaceDto updatePlace(@Valid @PathVariable("id") Long id, @RequestBody RequestPlaceDto requestPlaceDto) {
         Place updatedPlace = placeService.updatePlace(id, requestPlaceDto);
         return new ResponsePlaceDto(updatedPlace.getId(), updatedPlace.getPlaceName());
     }

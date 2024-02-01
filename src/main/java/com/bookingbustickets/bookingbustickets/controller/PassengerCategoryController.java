@@ -4,6 +4,7 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestPasseng
 import com.bookingbustickets.bookingbustickets.controller.response.ResponsePassengerCategoryDto;
 import com.bookingbustickets.bookingbustickets.domain.model.PassengerCategory;
 import com.bookingbustickets.bookingbustickets.domain.service.PassengerCategoryService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,14 +27,14 @@ public class PassengerCategoryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponsePassengerCategoryDto createPassengerCategory(@RequestBody RequestPassengerCategoryDto requestPassengerCategoryDto) {
+    public ResponsePassengerCategoryDto createPassengerCategory(@Valid @RequestBody RequestPassengerCategoryDto requestPassengerCategoryDto) {
         PassengerCategory createdPassengerCategory = passengerCategoryService.createPassengerCategory(requestPassengerCategoryDto);
         return new ResponsePassengerCategoryDto(createdPassengerCategory.getId(), createdPassengerCategory.getCategoryName(), createdPassengerCategory.getDiscountPercentage());
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponsePassengerCategoryDto updatePassengerCategory(@PathVariable("id") Long id, @RequestBody RequestPassengerCategoryDto requestPassengerCategoryDto) {
+    public ResponsePassengerCategoryDto updatePassengerCategory(@Valid @PathVariable("id") Long id, @RequestBody RequestPassengerCategoryDto requestPassengerCategoryDto) {
         PassengerCategory updatedPassengerCategory = passengerCategoryService.updatePassengerCategory(id, requestPassengerCategoryDto);
         return new ResponsePassengerCategoryDto(updatedPassengerCategory.getId(), updatedPassengerCategory.getCategoryName(), updatedPassengerCategory.getDiscountPercentage());
     }
