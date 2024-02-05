@@ -4,12 +4,10 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestTicketD
 import com.bookingbustickets.bookingbustickets.domain.model.*;
 import com.bookingbustickets.bookingbustickets.domain.repository.*;
 import com.bookingbustickets.bookingbustickets.exception.TicketNotFoundException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
@@ -103,10 +101,10 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    public void deleteTicket(@PathVariable("id") Long id) {
-        try {
+    public void deleteTicket(Long id) {
+        if (ticketRepository.existsById(id)) {
             ticketRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+        } else {
             throw new TicketNotFoundException("Ticket with ID " + id + " is not found");
         }
     }

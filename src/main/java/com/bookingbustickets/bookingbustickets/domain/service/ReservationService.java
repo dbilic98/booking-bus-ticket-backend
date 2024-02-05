@@ -3,7 +3,6 @@ package com.bookingbustickets.bookingbustickets.domain.service;
 import com.bookingbustickets.bookingbustickets.domain.model.Reservation;
 import com.bookingbustickets.bookingbustickets.domain.repository.ReservationRepository;
 import com.bookingbustickets.bookingbustickets.exception.ReservationNotFoundException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -48,9 +47,9 @@ public class ReservationService {
     }
 
     public void deleteReservation(Long id) {
-        try {
+        if(reservationRepository.existsById(id)) {
             reservationRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+        } else {
             throw new ReservationNotFoundException("Reservation with ID " + id + " is not found");
         }
     }

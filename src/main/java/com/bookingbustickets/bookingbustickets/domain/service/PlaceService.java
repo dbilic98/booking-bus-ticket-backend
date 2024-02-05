@@ -4,7 +4,6 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestPlaceDt
 import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
 import com.bookingbustickets.bookingbustickets.exception.PlaceNotFoundException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -38,9 +37,9 @@ public class PlaceService {
     }
 
     public void deletePlace(Long id) {
-        try {
-            deletePlace(id);
-        } catch (EmptyResultDataAccessException e) {
+        if (placeRepository.existsById(id)) {
+            placeRepository.deleteById(id);
+        } else {
             throw new PlaceNotFoundException("Place with ID " + id + " is not found");
         }
     }

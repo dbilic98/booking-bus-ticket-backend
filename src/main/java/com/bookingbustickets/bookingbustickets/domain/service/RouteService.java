@@ -6,7 +6,6 @@ import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
 import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
 import com.bookingbustickets.bookingbustickets.exception.RouteNotFoundException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +33,11 @@ public class RouteService {
         return optionalRoute.get();
     }
 
+    public Page<Route> getAllRoute(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return routeRepository.findAll(pageable);
+    }
+
     public Route createRoute(RequestRouteDto requestRouteDto) {
         Optional<Place> optionalStartPlace = placeRepository.findById(requestRouteDto.getStartPlaceId());
         Optional<Place> optionalEndPlace = placeRepository.findById(requestRouteDto.getEndPlaceId());
@@ -53,15 +57,10 @@ public class RouteService {
     }
 
     public void deleteRoute(Long id) {
-        try {
+        if (routeRepository.existsById(id)) {
             routeRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new RouteNotFoundException("Route with ID " + id + " is not found");
+        } else {
+            throw new RouteNotFoundException("Route with ID " + id + " id not found");
         }
-    }
-
-    public Page<Route> getAllRoute(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return routeRepository.findAll(pageable);
     }
 }

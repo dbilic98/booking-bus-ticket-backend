@@ -4,7 +4,6 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestPasseng
 import com.bookingbustickets.bookingbustickets.domain.model.PassengerCategory;
 import com.bookingbustickets.bookingbustickets.domain.repository.PassengerCategoryRepository;
 import com.bookingbustickets.bookingbustickets.exception.PassengerCategoryNotFoundException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +28,11 @@ public class PassengerCategoryService {
         return optionalPassengerCategory.get();
     }
 
+    public Page<PassengerCategory> getAllPassengerCategories(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return passengerCategoryRepository.findAll(pageable);
+    }
+
     public PassengerCategory createPassengerCategory(RequestPassengerCategoryDto requestPassengerCategoryDto) {
         PassengerCategory createdPassengerCategory = new PassengerCategory(requestPassengerCategoryDto.getCategoryName(), requestPassengerCategoryDto.getDiscountPercentage());
         return passengerCategoryRepository.save(createdPassengerCategory);
@@ -42,15 +46,10 @@ public class PassengerCategoryService {
     }
 
     public void deletePassengerCategory(Long id) {
-        try {
+        if (passengerCategoryRepository.existsById(id)) {
             passengerCategoryRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+        } else {
             throw new PassengerCategoryNotFoundException("Passenger Category with ID " + id + " is not found");
         }
-    }
-
-    public Page<PassengerCategory> getAllPassengerCategories(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return passengerCategoryRepository.findAll(pageable);
     }
 }
