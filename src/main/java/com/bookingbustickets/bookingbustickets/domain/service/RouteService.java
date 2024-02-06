@@ -1,6 +1,7 @@
 package com.bookingbustickets.bookingbustickets.domain.service;
 
 import com.bookingbustickets.bookingbustickets.controller.request.RequestRouteDto;
+import com.bookingbustickets.bookingbustickets.controller.response.ResponseRouteDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
@@ -66,7 +67,7 @@ public class RouteService {
         return routeRepository.findAll(pageable);
     }
 
-    public List<Route> findRoutesByStartAndEndPlaceAndScheduleDate(Long startPlaceId, Long endPlaceId, LocalDate scheduleDate) {
+    public List<ResponseRouteDto> findRoutesByStartAndEndPlaceAndScheduleDate(Long startPlaceId, Long endPlaceId, LocalDate scheduleDate) {
         return routeRepository.findRoutesBetweenPlacesAndDate(startPlaceId, endPlaceId, scheduleDate);
     }
 }

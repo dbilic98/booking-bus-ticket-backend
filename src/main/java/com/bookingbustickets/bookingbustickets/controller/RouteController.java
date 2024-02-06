@@ -53,7 +53,7 @@ public class RouteController {
     }
 
     @GetMapping("/find-start-to-end-places-and-schedule-date")
-    public List<Route> findRoutes(
+    public List<ResponseRouteDto> findRoutes(
             @RequestParam Long startPlaceId,
             @RequestParam Long endPlaceId,
             @RequestParam LocalDate scheduleDate) {
