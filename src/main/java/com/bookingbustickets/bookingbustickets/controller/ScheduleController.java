@@ -5,10 +5,7 @@ import com.bookingbustickets.bookingbustickets.controller.response.ResponseSched
 import com.bookingbustickets.bookingbustickets.domain.model.Schedule;
 import com.bookingbustickets.bookingbustickets.domain.service.ScheduleService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/schedules")
@@ -23,14 +20,14 @@ public class ScheduleController {
     @GetMapping("/{id}")
     public ResponseScheduleDto findScheduleById(@PathVariable Long id) {
         Schedule schedule = scheduleService.findScheduleById(id);
-        return new ResponseScheduleDto(schedule.getId(), schedule.getScheduleDate(), schedule.getDepartureTime(), schedule.getArrivalTime(),  schedule.getRoute().getId());
+        return new ResponseScheduleDto(schedule.getId(), schedule.getScheduleDate(), schedule.getDepartureTime(), schedule.getArrivalTime(), schedule.getRoute().getId());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseScheduleDto createSchedule(@RequestBody RequestScheduleDto requestScheduleDto) {
         Schedule createdSchedule = scheduleService.createSchedule(requestScheduleDto);
-        return new ResponseScheduleDto(createdSchedule.getId(), createdSchedule.getScheduleDate(), createdSchedule.getDepartureTime(), createdSchedule.getArrivalTime(),createdSchedule.getRoute().getId());
+        return new ResponseScheduleDto(createdSchedule.getId(), createdSchedule.getScheduleDate(), createdSchedule.getDepartureTime(), createdSchedule.getArrivalTime(), createdSchedule.getRoute().getId());
     }
 
     @PutMapping("/{id}")
@@ -42,13 +39,7 @@ public class ScheduleController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSchedule(@PathVariable("id") Long id){
+    public void deleteSchedule(@PathVariable("id") Long id) {
         scheduleService.deleteSchedule(id);
-    }
-
-    @GetMapping("/future-dates-and-times")
-    public ResponseEntity<List<Schedule>> getFutureDates() {
-        List<Schedule> futureDatesAndTimes = scheduleService.findFutureDates();
-        return ResponseEntity.ok(futureDatesAndTimes);
     }
 }

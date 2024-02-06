@@ -9,10 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,7 +37,7 @@ public class ScheduleService {
         if (optionalRoute.isEmpty()) {
             throw new RuntimeException("Route with the given ID is not found");
         }
-        Schedule createdSchedule = new Schedule(requestScheduleDto.getScheduleDate(), requestScheduleDto.getDepartureTime(), requestScheduleDto.getArrivalTime(),optionalRoute.get());
+        Schedule createdSchedule = new Schedule(requestScheduleDto.getScheduleDate(), requestScheduleDto.getDepartureTime(), requestScheduleDto.getArrivalTime(), optionalRoute.get());
         return scheduleRepository.save(createdSchedule);
     }
 
@@ -60,12 +56,4 @@ public class ScheduleService {
             throw new RuntimeException("Schedule with ID " + id + "does not exist");
         }
     }
-
-    public List<Schedule> findFutureDates() {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        LocalDate currentDate = currentDateTime.toLocalDate();
-        LocalTime currentTime = currentDateTime.toLocalTime();
-        return scheduleRepository.findFutureDates(currentDate, currentTime);
-    }
-
 }
