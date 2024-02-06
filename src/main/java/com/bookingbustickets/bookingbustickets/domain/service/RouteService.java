@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,8 +66,7 @@ public class RouteService {
         return routeRepository.findAll(pageable);
     }
 
-    public List<Route> findRoutesByStartAndEndPlace(Long startPlaceId, Long endPlaceId){
-        return routeRepository.findByStartPlaceAndEndPlace(startPlaceId, endPlaceId);
-
+    public List<Route> findRoutesByStartAndEndPlaceAndScheduleDate(Long startPlaceId, Long endPlaceId, LocalDate scheduleDate) {
+        return routeRepository.findRoutesBetweenPlacesAndDate(startPlaceId, endPlaceId, scheduleDate);
     }
 }

@@ -6,9 +6,9 @@ import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.service.RouteService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -52,16 +52,12 @@ public class RouteController {
         return routeService.getAllRoute(pageNumber, pageSize);
     }
 
-    @GetMapping("/find")
-    public ResponseEntity<List<Route>> findRoutesByStartAndEndPlace(
+    @GetMapping("/find-start-to-end-places-and-schedule-date")
+    public List<Route> findRoutes(
             @RequestParam Long startPlaceId,
-            @RequestParam Long endPlaceId) {
-        List<Route> routeList = routeService.findRoutesByStartAndEndPlace(startPlaceId, endPlaceId);
+            @RequestParam Long endPlaceId,
+            @RequestParam LocalDate scheduleDate) {
 
-        if (routeList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(routeList, HttpStatus.OK);
-        }
+        return routeService.findRoutesByStartAndEndPlaceAndScheduleDate(startPlaceId, endPlaceId, scheduleDate);
     }
 }

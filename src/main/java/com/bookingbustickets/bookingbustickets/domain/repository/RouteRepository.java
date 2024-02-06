@@ -6,11 +6,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public interface RouteRepository extends JpaRepository<Route, Long> {
 
-    @Query("SELECT r FROM Route r WHERE r.startPlace.id = :startPlaceId AND r.endPlace.id = :endPlaceId")
-    List<Route> findByStartPlaceAndEndPlace(@Param("startPlaceId") Long startPlaceId, @Param("endPlaceId") Long endPlaceId);
+    @Query("SELECT DISTINCT r " +
+            "FROM Route r " +
+            "JOIN FETCH r.scheduleList s " +
+            "WHERE r.startPlace.id = :startPlaceId " +
+            "AND r.endPlace.id = :endPlaceId " +
+            "AND s.scheduleDate = :scheduleDate")
+    List<Route> findRoutesBetweenPlacesAndDate(@Param("startPlaceId") Long startPlaceId,
+                                     @Param("endPlaceId") Long endPlaceId,
+                                     @Param("scheduleDate") LocalDate scheduleDate);
 }
