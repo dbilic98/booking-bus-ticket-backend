@@ -11,7 +11,7 @@ import lombok.Setter;
 public class RequestPassengerCategoryDto {
 
     @NotBlank(message = "Category name is mandatory")
-    @Size(min = 2, max = 50, message = "Category name should be at least 2 characters, and should not exceed 50 characters.")
+    @Size(min = 4, max = 50, message = "Category name should be at least 4 characters, and should not exceed 50 characters.")
     private final String categoryName;
 
     @NotNull(message = "Discount percentage is mandatory")
