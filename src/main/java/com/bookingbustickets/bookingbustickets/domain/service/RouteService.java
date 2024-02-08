@@ -7,12 +7,10 @@ import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
 import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,12 +60,25 @@ public class RouteService {
         }
     }
 
-    public Page<Route> getAllRoute(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return routeRepository.findAll(pageable);
+    public List<ResponseRouteDto> findRoutesByStartAndEndPlaceAndScheduleDate(Long startPlaceId, Long endPlaceId, LocalDate scheduleDate) {
+        List<Route> routeList = routeRepository.findRoutesBetweenPlacesAndDate(startPlaceId, endPlaceId, scheduleDate);
+        List<ResponseRouteDto> responseRouteDtos = new ArrayList<>();
+
+        for (Route route : routeList) {
+            ResponseRouteDto routeDto = mapToResponseRouteDto(route);
+            responseRouteDtos.add(routeDto);
+        }
+        return responseRouteDtos;
     }
 
-    public List<ResponseRouteDto> findRoutesByStartAndEndPlaceAndScheduleDate(Long startPlaceId, Long endPlaceId, LocalDate scheduleDate) {
-        return routeRepository.findRoutesBetweenPlacesAndDate(startPlaceId, endPlaceId, scheduleDate);
+    private ResponseRouteDto mapToResponseRouteDto(Route route) {
+        ResponseRouteDto routeDto = new ResponseRouteDto();
+        routeDto.setId(route.getId());
+        routeDto.setBasePrice(route.getBasePrice());
+        routeDto.setTotalDistance(route.getTotalDistance());
+        routeDto.setStartPlaceId(route.getStartPlace().getId());
+        routeDto.setEndPlaceId(route.getEndPlace().getId());
+        routeDto.setScheduleList(route.getScheduleList());
+        return routeDto;
     }
 }
