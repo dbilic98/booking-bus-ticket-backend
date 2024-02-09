@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -18,4 +19,11 @@ public class ResponseReservationDto {
 
     private ReservationStatus status;
 
+    private List<ResponseTicketDto> ticketList;
+
+    public ResponseReservationDto(Long id, LocalDateTime dateOfReservation, ReservationStatus status) {
+        this.id = id;
+        this.dateOfReservation = dateOfReservation;
+        this.status = status;
+    }
 }
