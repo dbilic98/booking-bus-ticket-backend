@@ -12,6 +12,4 @@ public class ResponsePlaceDto {
     private Long id;
 
     private String placeName;
-
-
 }
