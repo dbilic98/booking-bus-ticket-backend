@@ -2,8 +2,10 @@ package com.bookingbustickets.bookingbustickets.domain.service;
 
 import com.bookingbustickets.bookingbustickets.controller.request.RequestRouteDto;
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseRouteDto;
+import com.bookingbustickets.bookingbustickets.controller.response.ResponseScheduleDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.model.Route;
+import com.bookingbustickets.bookingbustickets.domain.model.Schedule;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
 import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -62,11 +64,14 @@ public class RouteService {
 
     public List<ResponseRouteDto> findRoutesByStartAndEndPlaceAndScheduleDate(Long startPlaceId, Long endPlaceId, LocalDate scheduleDate) {
         List<Route> routeList = routeRepository.findRoutesBetweenPlacesAndDate(startPlaceId, endPlaceId, scheduleDate);
-        List<ResponseRouteDto> responseRouteDtos = new ArrayList<>();
 
+        List<ResponseRouteDto> responseRouteDtos = new ArrayList<>();
         for (Route route : routeList) {
             ResponseRouteDto routeDto = mapToResponseRouteDto(route);
             responseRouteDtos.add(routeDto);
+            List<ResponseScheduleDto> scheduleDto = mapToResponseScheduleDto(route.getScheduleList(), route.getId());
+            routeDto.setScheduleList(scheduleDto);
+
         }
         return responseRouteDtos;
     }
@@ -78,7 +83,20 @@ public class RouteService {
         routeDto.setTotalDistance(route.getTotalDistance());
         routeDto.setStartPlaceId(route.getStartPlace().getId());
         routeDto.setEndPlaceId(route.getEndPlace().getId());
-        routeDto.setScheduleList(route.getScheduleList());
         return routeDto;
+    }
+
+    private List<ResponseScheduleDto> mapToResponseScheduleDto(List<Schedule> scheduleList, Long routeId) {
+        List<ResponseScheduleDto> responseScheduleDtos = new ArrayList<>();
+        ResponseScheduleDto scheduleDto = new ResponseScheduleDto();
+        for (Schedule schedule : scheduleList) {
+            scheduleDto.setId(schedule.getId());
+            scheduleDto.setScheduleDate(schedule.getScheduleDate());
+            scheduleDto.setDepartureTime(schedule.getDepartureTime());
+            scheduleDto.setArrivalTime(schedule.getArrivalTime());
+            scheduleDto.setRouteId(routeId);
+            responseScheduleDtos.add(scheduleDto);
+        }
+        return responseScheduleDtos;
     }
 }

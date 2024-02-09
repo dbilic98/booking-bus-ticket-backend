@@ -1,6 +1,5 @@
 package com.bookingbustickets.bookingbustickets.controller.response;
 
-import com.bookingbustickets.bookingbustickets.domain.model.Schedule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +24,13 @@ public class ResponseRouteDto {
 
     private long endPlaceId;
 
-    private List<Schedule> scheduleList;
+    private List<ResponseScheduleDto> scheduleList;
+
+    public ResponseRouteDto(long id, float basePrice, BigDecimal totalDistance, long startPlaceId, long endPlaceId){
+        this.id = id;
+        this.basePrice = basePrice;
+        this.totalDistance = totalDistance;
+        this.startPlaceId = startPlaceId;
+        this.endPlaceId = endPlaceId;
+    }
 }
