@@ -1,6 +1,7 @@
 package com.bookingbustickets.bookingbustickets.controller;
 
 import com.bookingbustickets.bookingbustickets.domain.service.SeatService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class SeatController {
 
     @PostMapping("/reserve/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void reserveSeat(@PathVariable("id") Long id) {
+    public void reserveSeat(@Valid @PathVariable("id") Long id) {
         seatService.reserveSeat(id);
     }
 }

@@ -5,7 +5,7 @@ import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
 import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
-import org.springframework.dao.EmptyResultDataAccessException;
+import com.bookingbustickets.bookingbustickets.exception.RouteNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +28,7 @@ public class RouteService {
     public Route findRouteById(Long id) {
         Optional<Route> optionalRoute = routeRepository.findById(id);
         if (optionalRoute.isEmpty()) {
-            throw new RuntimeException("Route with ID" + id + "does not exist");
+            throw new RouteNotFoundException("Route with ID " + id + " id not found");
         }
         return optionalRoute.get();
     }
@@ -52,10 +52,10 @@ public class RouteService {
     }
 
     public void deleteRoute(Long id) {
-        try {
+        if (routeRepository.existsById(id)) {
             routeRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Route with ID " + id + "does not exist");
+        } else {
+            throw new RouteNotFoundException("Route with ID " + id + " id not found");
         }
     }
 

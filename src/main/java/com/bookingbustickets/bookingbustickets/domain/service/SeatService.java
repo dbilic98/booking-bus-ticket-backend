@@ -2,6 +2,7 @@ package com.bookingbustickets.bookingbustickets.domain.service;
 
 import com.bookingbustickets.bookingbustickets.domain.model.Seat;
 import com.bookingbustickets.bookingbustickets.domain.repository.SeatRepository;
+import com.bookingbustickets.bookingbustickets.exception.SeatNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,7 +19,7 @@ public class SeatService {
     public void reserveSeat(Long id) {
         Optional<Seat> optionalSeat = seatRepository.findById(id);
         if (optionalSeat.isEmpty()) {
-            throw new RuntimeException("Seat with ID " + id + " does not exist");
+            throw new SeatNotFoundException("Seat with ID " + id + " is not found");
         }
         Seat selectedSeat = optionalSeat.get();
 

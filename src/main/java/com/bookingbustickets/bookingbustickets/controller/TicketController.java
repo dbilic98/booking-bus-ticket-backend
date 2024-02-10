@@ -4,6 +4,7 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestTicketD
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseTicketDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Ticket;
 import com.bookingbustickets.bookingbustickets.domain.service.TicketService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class TicketController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseTicketDto createTicket(@RequestBody RequestTicketDto requestTicketDto) {
+    public ResponseTicketDto createTicket(@Valid @RequestBody RequestTicketDto requestTicketDto) {
         Ticket createdTicket = ticketService.createTicket(requestTicketDto);
         return new ResponseTicketDto(createdTicket.getId(), createdTicket.getPrice(), createdTicket.getSchedule().getId(), createdTicket.getReservation().getId(), createdTicket.getOneWayRoute().getId(), createdTicket.getReturnRoute(), createdTicket.getPassengerCategory().getId());
     }

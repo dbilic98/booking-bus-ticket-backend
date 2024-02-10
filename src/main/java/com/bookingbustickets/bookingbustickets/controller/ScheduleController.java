@@ -4,6 +4,7 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestSchedul
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseScheduleDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Schedule;
 import com.bookingbustickets.bookingbustickets.domain.service.ScheduleService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,14 +26,14 @@ public class ScheduleController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseScheduleDto createSchedule(@RequestBody RequestScheduleDto requestScheduleDto) {
+    public ResponseScheduleDto createSchedule(@Valid @RequestBody RequestScheduleDto requestScheduleDto) {
         Schedule createdSchedule = scheduleService.createSchedule(requestScheduleDto);
         return new ResponseScheduleDto(createdSchedule.getId(), createdSchedule.getScheduleDate(), createdSchedule.getDepartureTime(), createdSchedule.getArrivalTime(),createdSchedule.getRoute().getId());
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseScheduleDto updateSchedule(@PathVariable("id") Long id, @RequestBody RequestScheduleDto requestScheduleDto) {
+    public ResponseScheduleDto updateSchedule(@Valid @PathVariable("id") Long id, @RequestBody RequestScheduleDto requestScheduleDto) {
         Schedule updatedSchedule = scheduleService.updateSchedule(id, requestScheduleDto);
         return new ResponseScheduleDto(updatedSchedule.getId(), updatedSchedule.getScheduleDate(), updatedSchedule.getDepartureTime(), updatedSchedule.getArrivalTime(), updatedSchedule.getRoute().getId());
     }
