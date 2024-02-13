@@ -1,7 +1,5 @@
 package com.bookingbustickets.bookingbustickets.controller.response;
 
-import com.bookingbustickets.bookingbustickets.domain.model.Route;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +19,7 @@ public class ResponseTicketDto {
 
     private long oneWayRouteId;
 
-    @JsonIgnore
-    private Route returnRouteId;
+    private Long returnRouteId;
 
     private long passengerCategoryId;
 }
