@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,8 +42,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             @NonNull HttpStatusCode status,
             @NonNull WebRequest request) {
         List<String> errors = new ArrayList<>();
-        ex.getBindingResult().getFieldErrors().forEach(fieldError -> errors.add(fieldError.getDefaultMessage()));
-        var errorResponse = new ErrorResponse(errors);
+        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+            errors.add(fieldError.getDefaultMessage());
+        }
+        ErrorResponse errorResponse = new ErrorResponse(errors);
         return ResponseEntity.badRequest().body(errorResponse);
     }
 }
