@@ -53,10 +53,10 @@ public class RouteController {
     public List<ResponseRouteDto> findRoutes(
             @RequestParam("startPlaceId") Long startPlaceId,
             @RequestParam("endPlaceId") Long endPlaceId,
-            @RequestParam("scheduleDate") LocalDate startScheduleDate, @RequestParam(value = "endScheduleDate", required = false) LocalDate endScheduleDate) {
+            @RequestParam("scheduleDate") LocalDate startScheduleDate,
+            @RequestParam(value = "endScheduleDate", required = false) LocalDate endScheduleDate) {
 
         List<Route> oneWayRoutes = routeService.findFilteredRoutes(startPlaceId, endPlaceId, startScheduleDate);
-
 
         if (oneWayRoutes.isEmpty()) {
             return List.of();
@@ -64,7 +64,6 @@ public class RouteController {
 
         if (endScheduleDate == null) {
             return mapRoutesToResponseRouteDtos(oneWayRoutes);
-
         }
 
         List<Route> returnRoutes = routeService.findFilteredRoutes(endPlaceId, startPlaceId, endScheduleDate);
@@ -77,9 +76,7 @@ public class RouteController {
         mergedRoutes.addAll(oneWayRoutes);
         mergedRoutes.addAll(returnRoutes);
 
-
         return mapRoutesToResponseRouteDtos(mergedRoutes);
-
     }
 
     private List<ResponseRouteDto> mapRoutesToResponseRouteDtos(List<Route> routes) {
