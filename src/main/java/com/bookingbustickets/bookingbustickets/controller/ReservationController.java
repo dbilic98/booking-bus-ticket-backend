@@ -30,10 +30,11 @@ public class ReservationController {
             ResponseTicketDto responseTicketDto = new ResponseTicketDto(
                     ticket.getId(),
                     ticket.getPrice(),
-                    ticket.getSchedule().getId(),
+                    ticket.getOneWaySchedule().getId(),
+                    ticket.getReturnSchedule() == null ? null : ticket.getReturnSchedule().getId(),
                     ticket.getReservation().getId(),
                     ticket.getOneWayRoute().getId(),
-                    ticket.getReturnRoute().getId(),
+                    ticket.getReturnRoute() == null ? null : ticket.getReturnRoute().getId(),
                     ticket.getPassengerCategory().getId());
             responseTicketDtos.add(responseTicketDto);
         }

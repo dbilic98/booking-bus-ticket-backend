@@ -13,7 +13,9 @@ public class ResponseTicketDto {
 
     private float price;
 
-    private long scheduleDateId;
+    private long oneWayScheduleId;
+
+    private Long returnScheduleId;
 
     private long reservationId;
 

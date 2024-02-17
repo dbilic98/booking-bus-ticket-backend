@@ -11,7 +11,9 @@ public class RequestTicketDto {
 
     private final float price;
 
-    private final long scheduleDateId;;
+    private final long oneWayScheduleId;
+
+    private final Long returnScheduleId;
 
     private final long reservationId;
 

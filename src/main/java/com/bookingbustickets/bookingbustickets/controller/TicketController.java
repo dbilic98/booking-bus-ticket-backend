@@ -21,14 +21,30 @@ public class TicketController {
     @GetMapping("/{id}")
     public ResponseTicketDto findTicketById(@PathVariable("id") Long id) {
         Ticket ticket = ticketService.findTicketById(id);
-        return new ResponseTicketDto(ticket.getId(), ticket.getPrice(),ticket.getSchedule().getId(), ticket.getReservation().getId(), ticket.getOneWayRoute().getId(), ticket.getReturnRoute().getId(), ticket.getPassengerCategory().getId());
+        return new ResponseTicketDto(
+                ticket.getId(),
+                ticket.getPrice(),
+                ticket.getOneWaySchedule().getId(),
+                ticket.getReturnSchedule() == null ? null : ticket.getReturnSchedule().getId(),
+                ticket.getReservation().getId(),
+                ticket.getOneWayRoute().getId(),
+                ticket.getReturnRoute() == null ? null : ticket.getReturnRoute().getId(),
+                ticket.getPassengerCategory().getId());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseTicketDto createTicket(@RequestBody RequestTicketDto requestTicketDto) {
         Ticket createdTicket = ticketService.createTicket(requestTicketDto);
-        return new ResponseTicketDto(createdTicket.getId(), createdTicket.getPrice(), createdTicket.getSchedule().getId(), createdTicket.getReservation().getId(), createdTicket.getOneWayRoute().getId(), createdTicket.getReturnRoute().getId(), createdTicket.getPassengerCategory().getId());
+        return new ResponseTicketDto(
+                createdTicket.getId(),
+                createdTicket.getPrice(),
+                createdTicket.getOneWaySchedule().getId(),
+                createdTicket.getReturnSchedule() == null ? null : createdTicket.getReturnSchedule().getId(),
+                createdTicket.getReservation().getId(),
+                createdTicket.getOneWayRoute().getId(),
+                createdTicket.getReturnRoute().getId(),
+                createdTicket.getPassengerCategory().getId());
     }
 
     @DeleteMapping("/{id}")
