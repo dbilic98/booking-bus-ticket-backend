@@ -59,47 +59,54 @@ public class TicketService {
     }
 
     public Ticket createTicket(RequestTicketDto requestTicketDto) {
-        Optional<Schedule> optionalSchedule = scheduleRepository.findById(requestTicketDto.getScheduleDateId());
-        if (optionalSchedule.isEmpty()) {
-            throw new ScheduleNotFoundException("Schedule with the given ID is not found");
-        }
-
-        Optional<Reservation> optionalReservation = reservationRepository.findById(requestTicketDto.getReservationId());
-        if (optionalReservation.isEmpty()) {
-            throw new ReservationNotFoundException("Reservation with the given ID is not found");
-        }
-
-        Optional<PassengerCategory> optionalPassengerCategory = passengerCategoryRepository.findById(requestTicketDto.getPassengerCategoryId());
-        if (optionalPassengerCategory.isEmpty()) {
-            throw new PassengerCategoryNotFoundException("Passenger category with the given ID is not found");
-        }
-
-        Optional<Route> optionalOneWayRoute = routeRepository.findById(requestTicketDto.getOneWayRouteId());
-        if (optionalOneWayRoute.isEmpty()) {
-            throw new RouteNotFoundException("One-way route with the given ID is not found");
-        }
-
-        Optional<Route> optionalReturnRoute;
-        if (requestTicketDto.getReturnRouteId() != null) {
-            optionalReturnRoute = routeRepository.findById(requestTicketDto.getReturnRouteId());
-            if (optionalReturnRoute.isEmpty()) {
-                throw new RouteNotFoundException("Return route with the given ID is not found");
+            Optional<Schedule> optionalOneWaySchedule = scheduleRepository.findById(requestTicketDto.getOneWayScheduleId());
+            if (optionalOneWaySchedule.isEmpty()) {
+                throw new RuntimeException("One way schedule with the given ID is not found");
             }
-        } else {
-            optionalReturnRoute = Optional.empty();
+
+            Optional<Schedule> optionalReturnSchedule = Optional.empty();
+            if (requestTicketDto.getReturnScheduleId() != null) {
+                optionalReturnSchedule = scheduleRepository.findById(requestTicketDto.getReturnScheduleId());
+                if (optionalReturnSchedule.isEmpty()) {
+                    throw new RuntimeException("Return schedule with the given ID is not found");
+                }
+            }
+
+            Optional<Reservation> optionalReservation = reservationRepository.findById(requestTicketDto.getReservationId());
+            if (optionalReservation.isEmpty()) {
+                throw new ReservationNotFoundException("Reservation with the given ID is not found");
+            }
+
+            Optional<PassengerCategory> optionalPassengerCategory = passengerCategoryRepository.findById(requestTicketDto.getPassengerCategoryId());
+            if (optionalPassengerCategory.isEmpty()) {
+                throw new PassengerCategoryNotFoundException("Passenger category with the given ID is not found");
+            }
+
+            Optional<Route> optionalOneWayRoute = routeRepository.findById(requestTicketDto.getOneWayRouteId());
+            if (optionalOneWayRoute.isEmpty()) {
+                throw new RouteNotFoundException("One-way route with the given ID is not found");
+            }
+
+            Optional<Route> optionalReturnRoute = Optional.empty();
+            if (requestTicketDto.getReturnRouteId() != null) {
+                optionalReturnRoute = routeRepository.findById(requestTicketDto.getReturnRouteId());
+                if (optionalReturnRoute.isEmpty()) {
+                    throw new RouteNotFoundException("Return route with the given ID is not found");
+                }
+            }
+
+            Ticket ticket = new Ticket();
+            calculatePrice(ticket, optionalOneWayRoute.get(), optionalReturnRoute.orElse(null), optionalPassengerCategory.get());
+
+            ticket.setOneWaySchedule(optionalOneWaySchedule.get());
+            ticket.setReturnSchedule(optionalReturnSchedule.orElse(null));
+            ticket.setReservation(optionalReservation.get());
+            ticket.setPassengerCategory(optionalPassengerCategory.get());
+            ticket.setOneWayRoute(optionalOneWayRoute.get());
+            ticket.setReturnRoute(optionalReturnRoute.orElse(null));
+
+            return ticketRepository.save(ticket);
         }
-
-        Ticket ticket = new Ticket();
-        calculatePrice(ticket, optionalOneWayRoute.get(), optionalReturnRoute.orElse(null), optionalPassengerCategory.get());
-
-        ticket.setSchedule(optionalSchedule.get());
-        ticket.setReservation(optionalReservation.get());
-        ticket.setOneWayRoute(optionalOneWayRoute.get());
-        ticket.setPassengerCategory(optionalPassengerCategory.get());
-        ticket.setReturnRoute(optionalReturnRoute.orElse(null));
-
-        return ticketRepository.save(ticket);
-    }
 
     public void deleteTicket(Long id) {
         if (ticketRepository.existsById(id)) {

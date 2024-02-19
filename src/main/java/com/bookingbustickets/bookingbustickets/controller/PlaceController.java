@@ -21,21 +21,27 @@ public class PlaceController {
     @GetMapping("/{id}")
     public ResponsePlaceDto findPlaceById(@PathVariable("id") Long id) {
         Place place = placeService.findPlaceById(id);
-        return new ResponsePlaceDto(place.getId(), place.getPlaceName());
+        return new ResponsePlaceDto(
+                place.getId(),
+                place.getPlaceName());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponsePlaceDto createPlace(@Valid @RequestBody RequestPlaceDto requestPlaceDto) {
         Place createdPlace = placeService.createPlace(requestPlaceDto);
-        return new ResponsePlaceDto(createdPlace.getId(), createdPlace.getPlaceName());
+        return new ResponsePlaceDto(
+                createdPlace.getId(),
+                createdPlace.getPlaceName());
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponsePlaceDto updatePlace(@Valid @PathVariable("id") Long id, @RequestBody RequestPlaceDto requestPlaceDto) {
         Place updatedPlace = placeService.updatePlace(id, requestPlaceDto);
-        return new ResponsePlaceDto(updatedPlace.getId(), updatedPlace.getPlaceName());
+        return new ResponsePlaceDto(
+                updatedPlace.getId(),
+                updatedPlace.getPlaceName());
     }
 
     @DeleteMapping("{id}")

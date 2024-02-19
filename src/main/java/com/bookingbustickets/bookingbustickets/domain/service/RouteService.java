@@ -5,6 +5,7 @@ import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
 import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import com.bookingbustickets.bookingbustickets.exception.PlaceNotFoundException;
 import com.bookingbustickets.bookingbustickets.exception.RouteNotFoundException;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -60,8 +63,7 @@ public class RouteService {
         }
     }
 
-    public Page<Route> getAllRoute(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return routeRepository.findAll(pageable);
+    public List<Route> findFilteredRoutes(Long startPlaceId, Long endPlaceId, LocalDate scheduleDate) {
+        return routeRepository.findRoutesBetweenPlacesAndDate(startPlaceId, endPlaceId, scheduleDate);
     }
 }

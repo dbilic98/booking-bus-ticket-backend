@@ -6,11 +6,13 @@ CREATE TABLE ticket
     one_way_route_id      BIGINT,
     return_route_id       BIGINT,
     passenger_category_id BIGINT,
-    schedule_id   BIGINT,
+    one_way_schedule_id   BIGINT,
+    return_schedule_id    BIGINT,
     PRIMARY KEY (id),
     FOREIGN KEY (reservation_id) REFERENCES reservation (id),
     FOREIGN KEY (one_way_route_id) REFERENCES route (id),
     FOREIGN KEY (return_route_id) REFERENCES route (id),
     FOREIGN KEY (passenger_category_id) REFERENCES passenger_category (id),
-    FOREIGN KEY (schedule_id) REFERENCES schedule (id)
+    FOREIGN KEY (one_way_schedule_id) REFERENCES schedule (id),
+    FOREIGN KEY (return_schedule_id) REFERENCES schedule (id)
 );

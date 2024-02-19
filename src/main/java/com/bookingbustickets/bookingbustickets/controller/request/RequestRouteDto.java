@@ -1,5 +1,6 @@
 package com.bookingbustickets.bookingbustickets.controller.request;
 
+import com.bookingbustickets.bookingbustickets.controller.response.ResponseScheduleDto;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,4 +29,6 @@ public class RequestRouteDto {
     private final long startPlaceId;
 
     private final long endPlaceId;
+
+    private final List<ResponseScheduleDto> scheduleList;
 }

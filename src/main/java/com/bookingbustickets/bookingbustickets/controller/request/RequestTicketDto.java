@@ -17,7 +17,9 @@ public class RequestTicketDto {
     @DecimalMax(value = "100.0", message = "Price cannot exceed 100.0")
     private final float price;
 
-    private final long scheduleDateId;;
+    private final long oneWayScheduleId;
+
+    private final Long returnScheduleId;
 
     private final long reservationId;
 

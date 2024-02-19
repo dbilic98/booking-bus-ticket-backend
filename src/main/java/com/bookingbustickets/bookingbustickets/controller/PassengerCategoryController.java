@@ -22,21 +22,30 @@ public class PassengerCategoryController {
     @GetMapping("/{id}")
     public ResponsePassengerCategoryDto findPassengerCategoryById(@PathVariable Long id) {
         PassengerCategory passengerCategory = passengerCategoryService.findPassengerCategoryById(id);
-        return new ResponsePassengerCategoryDto(passengerCategory.getId(), passengerCategory.getCategoryName(), passengerCategory.getDiscountPercentage());
+        return new ResponsePassengerCategoryDto(
+                passengerCategory.getId(),
+                passengerCategory.getCategoryName(),
+                passengerCategory.getDiscountPercentage());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponsePassengerCategoryDto createPassengerCategory(@Valid @RequestBody RequestPassengerCategoryDto requestPassengerCategoryDto) {
         PassengerCategory createdPassengerCategory = passengerCategoryService.createPassengerCategory(requestPassengerCategoryDto);
-        return new ResponsePassengerCategoryDto(createdPassengerCategory.getId(), createdPassengerCategory.getCategoryName(), createdPassengerCategory.getDiscountPercentage());
+        return new ResponsePassengerCategoryDto(
+                createdPassengerCategory.getId(),
+                createdPassengerCategory.getCategoryName(),
+                createdPassengerCategory.getDiscountPercentage());
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponsePassengerCategoryDto updatePassengerCategory(@Valid @PathVariable("id") Long id, @RequestBody RequestPassengerCategoryDto requestPassengerCategoryDto) {
         PassengerCategory updatedPassengerCategory = passengerCategoryService.updatePassengerCategory(id, requestPassengerCategoryDto);
-        return new ResponsePassengerCategoryDto(updatedPassengerCategory.getId(), updatedPassengerCategory.getCategoryName(), updatedPassengerCategory.getDiscountPercentage());
+        return new ResponsePassengerCategoryDto(
+                updatedPassengerCategory.getId(),
+                updatedPassengerCategory.getCategoryName(),
+                updatedPassengerCategory.getDiscountPercentage());
     }
 
     @DeleteMapping("/{id}")

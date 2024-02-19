@@ -21,8 +21,12 @@ public class Ticket {
     private float price;
 
     @ManyToOne
-    @JoinColumn(name = "schedule_id")
-    private Schedule schedule;
+    @JoinColumn(name = "one_way_schedule_id")
+    private Schedule oneWaySchedule;
+
+    @ManyToOne
+    @JoinColumn(name = "return_schedule_id")
+    private Schedule returnSchedule;
 
     @ManyToOne
     @JoinColumn(name = "reservation_id")

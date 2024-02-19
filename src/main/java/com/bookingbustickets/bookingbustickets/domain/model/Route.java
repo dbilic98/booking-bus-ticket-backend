@@ -34,7 +34,7 @@ public class Route {
     @JoinColumn(name = "end_place_id")
     private Place endPlace;
 
-    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "route")
     private List<Schedule> scheduleList;
 
     public Route(float basePrice, BigDecimal totalDistance, Place startPlace, Place endPlace) {
