@@ -2,7 +2,10 @@ package com.bookingbustickets.bookingbustickets.domain.service;
 
 import com.bookingbustickets.bookingbustickets.domain.model.Reservation;
 import com.bookingbustickets.bookingbustickets.domain.repository.ReservationRepository;
+import com.bookingbustickets.bookingbustickets.exception.ExpiredReservationException;
+import com.bookingbustickets.bookingbustickets.exception.InvalidReservationException;
 import com.bookingbustickets.bookingbustickets.exception.ReservationNotFoundException;
+import com.bookingbustickets.bookingbustickets.exception.ReservationStatusException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -56,14 +59,13 @@ public class ReservationService {
 
     private void validateReservation(Reservation reservation) {
         if (!reservation.hasAnyTickets()) {
-            throw new RuntimeException("Reservation with ID " + reservation.getId() + " does not have any tickets");
+            throw new InvalidReservationException("Reservation with ID " + reservation.getId() + " does not have any tickets");
         }
         if (!reservation.isPending()) {
-            throw new RuntimeException("The reservation status is not pending");
+            throw new ReservationStatusException("The reservation status is not pending");
         }
         if (reservation.isOlderThanDefinedThreshold(ALLOWED_MINUTES)) {
-            throw new RuntimeException("Reservation is older than " + ALLOWED_MINUTES + " minutes. Can not be confirmed.");
+            throw new ExpiredReservationException("Reservation is older than " + ALLOWED_MINUTES + " minutes. Can not be confirmed.");
         }
     }
-
 }

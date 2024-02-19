@@ -26,7 +26,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             RouteNotFoundException.class,
             ScheduleNotFoundException.class,
             SeatNotFoundException.class,
-            TicketNotFoundException.class})
+            TicketNotFoundException.class,
+            InvalidReservationException.class,
+            ReservationStatusException.class,
+            ExpiredReservationException.class})
 
     public ResponseEntity<Object> handleNotFoundException(Exception e, WebRequest request) {
         List<String> reasons = new ArrayList<>();

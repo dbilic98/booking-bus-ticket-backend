@@ -5,6 +5,7 @@ import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
 import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
+import com.bookingbustickets.bookingbustickets.exception.PlaceNotFoundException;
 import com.bookingbustickets.bookingbustickets.exception.RouteNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,7 +39,7 @@ public class RouteService {
         Optional<Place> optionalEndPlace = placeRepository.findById(requestRouteDto.getEndPlaceId());
 
         if (optionalStartPlace.isEmpty() || optionalEndPlace.isEmpty()) {
-            throw new RuntimeException("Place with the given ID is not found");
+            throw new PlaceNotFoundException("Place with the given ID is not found");
         }
         Route createdRoute = new Route(requestRouteDto.getBasePrice(), requestRouteDto.getTotalDistance(), optionalStartPlace.get(), optionalEndPlace.get());
         return routeRepository.save(createdRoute);
