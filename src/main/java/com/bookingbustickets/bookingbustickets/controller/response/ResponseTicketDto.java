@@ -1,7 +1,5 @@
 package com.bookingbustickets.bookingbustickets.controller.response;
 
-import com.bookingbustickets.bookingbustickets.domain.model.Route;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,14 +13,15 @@ public class ResponseTicketDto {
 
     private float price;
 
-    private long scheduleDateId;
+    private long oneWayScheduleId;
+
+    private Long returnScheduleId;
 
     private long reservationId;
 
     private long oneWayRouteId;
 
-    @JsonIgnore
-    private Route returnRouteId;
+    private Long returnRouteId;
 
     private long passengerCategoryId;
 }

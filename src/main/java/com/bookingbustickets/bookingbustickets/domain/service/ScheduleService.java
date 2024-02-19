@@ -37,7 +37,7 @@ public class ScheduleService {
         if (optionalRoute.isEmpty()) {
             throw new RuntimeException("Route with the given ID is not found");
         }
-        Schedule createdSchedule = new Schedule(requestScheduleDto.getScheduleDate(), requestScheduleDto.getDepartureTime(), requestScheduleDto.getArrivalTime(),optionalRoute.get());
+        Schedule createdSchedule = new Schedule(requestScheduleDto.getScheduleDate(), requestScheduleDto.getDepartureTime(), requestScheduleDto.getArrivalTime(), optionalRoute.get());
         return scheduleRepository.save(createdSchedule);
     }
 
