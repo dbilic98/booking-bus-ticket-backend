@@ -38,14 +38,21 @@ public class ReservationController {
                     ticket.getPassengerCategory().getId());
             responseTicketDtos.add(responseTicketDto);
         }
-        return new ResponseReservationDto(reservation.getId(), reservation.getDateOfReservation(), reservation.getStatus(), responseTicketDtos);
+        return new ResponseReservationDto(
+                reservation.getId(),
+                reservation.getDateOfReservation(),
+                reservation.getStatus(),
+                responseTicketDtos);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseReservationDto createReservation() {
         Reservation createdReservation = reservationService.createReservation();
-        return new ResponseReservationDto(createdReservation.getId(), createdReservation.getDateOfReservation(), createdReservation.getStatus());
+        return new ResponseReservationDto(
+                createdReservation.getId(),
+                createdReservation.getDateOfReservation(),
+                createdReservation.getStatus());
     }
 
     @PutMapping("/confirm/{id}")

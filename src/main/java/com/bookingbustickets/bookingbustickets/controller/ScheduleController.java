@@ -20,21 +20,36 @@ public class ScheduleController {
     @GetMapping("/{id}")
     public ResponseScheduleDto findScheduleById(@PathVariable Long id) {
         Schedule schedule = scheduleService.findScheduleById(id);
-        return new ResponseScheduleDto(schedule.getId(), schedule.getScheduleDate(), schedule.getDepartureTime(), schedule.getArrivalTime(), schedule.getRoute().getId());
+        return new ResponseScheduleDto(
+                schedule.getId(),
+                schedule.getScheduleDate(),
+                schedule.getDepartureTime(),
+                schedule.getArrivalTime(),
+                schedule.getRoute().getId());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseScheduleDto createSchedule(@RequestBody RequestScheduleDto requestScheduleDto) {
         Schedule createdSchedule = scheduleService.createSchedule(requestScheduleDto);
-        return new ResponseScheduleDto(createdSchedule.getId(), createdSchedule.getScheduleDate(), createdSchedule.getDepartureTime(), createdSchedule.getArrivalTime(), createdSchedule.getRoute().getId());
+        return new ResponseScheduleDto(
+                createdSchedule.getId(),
+                createdSchedule.getScheduleDate(),
+                createdSchedule.getDepartureTime(),
+                createdSchedule.getArrivalTime(),
+                createdSchedule.getRoute().getId());
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseScheduleDto updateSchedule(@PathVariable("id") Long id, @RequestBody RequestScheduleDto requestScheduleDto) {
         Schedule updatedSchedule = scheduleService.updateSchedule(id, requestScheduleDto);
-        return new ResponseScheduleDto(updatedSchedule.getId(), updatedSchedule.getScheduleDate(), updatedSchedule.getDepartureTime(), updatedSchedule.getArrivalTime(), updatedSchedule.getRoute().getId());
+        return new ResponseScheduleDto(
+                updatedSchedule.getId(),
+                updatedSchedule.getScheduleDate(),
+                updatedSchedule.getDepartureTime(),
+                updatedSchedule.getArrivalTime(),
+                updatedSchedule.getRoute().getId());
     }
 
     @DeleteMapping("/{id}")

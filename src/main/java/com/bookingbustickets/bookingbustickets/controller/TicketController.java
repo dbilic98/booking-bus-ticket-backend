@@ -43,7 +43,7 @@ public class TicketController {
                 createdTicket.getReturnSchedule() == null ? null : createdTicket.getReturnSchedule().getId(),
                 createdTicket.getReservation().getId(),
                 createdTicket.getOneWayRoute().getId(),
-                createdTicket.getReturnRoute().getId(),
+                createdTicket.getReturnRoute() == null ? null : createdTicket.getReturnRoute().getId(),
                 createdTicket.getPassengerCategory().getId());
     }
 
