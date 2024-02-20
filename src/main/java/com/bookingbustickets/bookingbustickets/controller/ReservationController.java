@@ -35,7 +35,9 @@ public class ReservationController {
                     ticket.getReservation().getId(),
                     ticket.getOneWayRoute().getId(),
                     ticket.getReturnRoute() == null ? null : ticket.getReturnRoute().getId(),
-                    ticket.getPassengerCategory().getId());
+                    ticket.getPassengerCategory().getId(),
+                    ticket.getOneWaySeat().getId(),
+                    ticket.getReturnSeat() == null ? null : ticket.getReturnSeat().getId());
             responseTicketDtos.add(responseTicketDto);
         }
         return new ResponseReservationDto(
