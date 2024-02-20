@@ -36,10 +36,11 @@ public class Schedule {
     @JoinColumn(name = "bus_id")
     private Bus bus;
 
-    public Schedule(LocalDate scheduleDate, LocalTime departureTime, LocalTime arrivalTime, Route route) {
+    public Schedule(LocalDate scheduleDate, LocalTime departureTime, LocalTime arrivalTime, Route route, Bus bus) {
         this.scheduleDate = scheduleDate;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.route=route;
+        this.bus = bus;
     }
 }

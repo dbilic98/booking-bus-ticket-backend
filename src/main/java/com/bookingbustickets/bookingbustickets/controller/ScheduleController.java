@@ -26,7 +26,8 @@ public class ScheduleController {
                 schedule.getScheduleDate(),
                 schedule.getDepartureTime(),
                 schedule.getArrivalTime(),
-                schedule.getRoute().getId());
+                schedule.getRoute().getId(),
+                schedule.getBus().getId());
     }
 
     @PostMapping
@@ -38,7 +39,8 @@ public class ScheduleController {
                 createdSchedule.getScheduleDate(),
                 createdSchedule.getDepartureTime(),
                 createdSchedule.getArrivalTime(),
-                createdSchedule.getRoute().getId());
+                createdSchedule.getRoute().getId(),
+                createdSchedule.getBus().getId());
     }
 
     @PutMapping("/{id}")
@@ -50,7 +52,8 @@ public class ScheduleController {
                 updatedSchedule.getScheduleDate(),
                 updatedSchedule.getDepartureTime(),
                 updatedSchedule.getArrivalTime(),
-                updatedSchedule.getRoute().getId());
+                updatedSchedule.getRoute().getId(),
+                updatedSchedule.getBus().getId());
     }
 
     @DeleteMapping("/{id}")

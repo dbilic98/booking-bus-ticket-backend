@@ -26,6 +26,9 @@ public class ResponseScheduleDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long routeId;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long busId;
+
     public ResponseScheduleDto(Long id, LocalDate scheduleDate, LocalTime departureTime, LocalTime arrivalTime) {
         this.id = id;
         this.scheduleDate = scheduleDate;

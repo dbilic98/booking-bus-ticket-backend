@@ -14,7 +14,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class RequestScheduleDto {
 
-
     @NotNull(message = "Schedule date is mandatory")
     @FutureOrPresent(message = "The date must be today or in the future")
     private final LocalDate scheduleDate;
@@ -26,4 +25,6 @@ public class RequestScheduleDto {
     private final LocalTime arrivalTime;
 
     private final Long routeId;
+
+    private final Long busId;
 }
