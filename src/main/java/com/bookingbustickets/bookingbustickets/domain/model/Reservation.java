@@ -31,9 +31,6 @@ public class Reservation {
     private ReservationStatus status;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
-    private List<Seat> seats;
-
-    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<Ticket> tickets = new ArrayList<>();
 
     public Reservation(LocalDateTime dateOfReservation, ReservationStatus status) {
