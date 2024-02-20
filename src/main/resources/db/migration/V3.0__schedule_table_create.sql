@@ -5,8 +5,8 @@ CREATE TABLE schedule
     departure_time TIME                      NOT NULL,
     arrival_time   TIME                      NOT NULL,
     route_id       BIGINT,
-    PRIMARY KEY (id)
+    bus_id         BIGINT,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_schedule_route_id FOREIGN KEY (route_id) REFERENCES route (id),
+    CONSTRAINT fk_schedule_bus_id FOREIGN KEY (bus_id) REFERENCES bus (id)
 );
-
-ALTER TABLE schedule
-    ADD CONSTRAINT fk_schedule_route FOREIGN KEY (route_id) REFERENCES route (id);

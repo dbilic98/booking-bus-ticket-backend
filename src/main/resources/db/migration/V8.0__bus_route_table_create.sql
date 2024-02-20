@@ -4,6 +4,6 @@ CREATE TABLE bus_route
     bus_id   BIGINT,
     route_id BIGINT,
     PRIMARY KEY (id),
-    FOREIGN KEY (bus_id) REFERENCES bus (id),
-    FOREIGN KEY (route_id) REFERENCES route (id)
+    CONSTRAINT fk_bus_route_bus_id FOREIGN KEY (bus_id) REFERENCES bus (id),
+    CONSTRAINT fk_bus_route_route_id FOREIGN KEY (route_id) REFERENCES route (id)
 );
