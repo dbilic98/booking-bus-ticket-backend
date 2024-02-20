@@ -32,6 +32,10 @@ public class Schedule {
     @JoinColumn(name = "route_id")
     private Route route;
 
+    @ManyToOne
+    @JoinColumn(name = "bus_id")
+    private Bus bus;
+
     public Schedule(LocalDate scheduleDate, LocalTime departureTime, LocalTime arrivalTime, Route route) {
         this.scheduleDate = scheduleDate;
         this.departureTime = departureTime;
