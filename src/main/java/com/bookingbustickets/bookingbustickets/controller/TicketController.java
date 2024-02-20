@@ -30,7 +30,9 @@ public class TicketController {
                 ticket.getReservation().getId(),
                 ticket.getOneWayRoute().getId(),
                 ticket.getReturnRoute() == null ? null : ticket.getReturnRoute().getId(),
-                ticket.getPassengerCategory().getId());
+                ticket.getPassengerCategory().getId(),
+                ticket.getOneWaySeat().getId(),
+                ticket.getReturnSeat() == null ? null : ticket.getReturnSeat().getId());
     }
 
     @PostMapping
@@ -45,7 +47,9 @@ public class TicketController {
                 createdTicket.getReservation().getId(),
                 createdTicket.getOneWayRoute().getId(),
                 createdTicket.getReturnRoute() == null ? null : createdTicket.getReturnRoute().getId(),
-                createdTicket.getPassengerCategory().getId());
+                createdTicket.getPassengerCategory().getId(),
+                createdTicket.getOneWaySeat().getId(),
+                createdTicket.getReturnSeat() == null ? null : createdTicket.getReturnSeat().getId());
     }
 
     @DeleteMapping("/{id}")

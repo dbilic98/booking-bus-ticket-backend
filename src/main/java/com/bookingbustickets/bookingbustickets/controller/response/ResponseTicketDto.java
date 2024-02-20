@@ -24,4 +24,8 @@ public class ResponseTicketDto {
     private Long returnRouteId;
 
     private long passengerCategoryId;
+
+    private long oneWaySeatId;
+
+    private Long returnSeatId;
 }
