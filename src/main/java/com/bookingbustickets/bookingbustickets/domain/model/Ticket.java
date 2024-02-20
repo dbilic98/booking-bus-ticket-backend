@@ -44,4 +44,12 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "passenger_category_id")
     private PassengerCategory passengerCategory;
+
+    @ManyToOne
+    @JoinColumn(name = "one_way_seat_id")
+    private Seat oneWaySeat;
+
+    @ManyToOne
+    @JoinColumn(name = "return_seat_id")
+    private Seat returnSeat;
 }
