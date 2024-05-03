@@ -26,6 +26,9 @@ public class Bus {
     @OneToMany(mappedBy = "bus")
     private List<Seat> seats;
 
+    @OneToMany(mappedBy = "bus")
+    private List<Schedule> schedules;
+
     public Bus(String model, String licensePlate, List<Seat> seats) {
         this.model = model;
         this.licensePlate = licensePlate;

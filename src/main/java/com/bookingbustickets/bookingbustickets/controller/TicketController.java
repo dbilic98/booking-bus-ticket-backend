@@ -28,10 +28,8 @@ public class TicketController {
                 ticket.getOneWaySchedule().getId(),
                 ticket.getReturnSchedule() == null ? null : ticket.getReturnSchedule().getId(),
                 ticket.getReservation().getId(),
-                ticket.getOneWayRoute().getId(),
-                ticket.getReturnRoute() == null ? null : ticket.getReturnRoute().getId(),
-                ticket.getPassengerCategory().getId(),
-                ticket.getOneWaySeat().getId(),
+                ticket.getOneWayRoute().getId(), ticket.getReturnRoute() == null ? null : ticket.getReturnRoute().getId(),
+                ticket.getPassengerCategory().getId(), ticket.getOneWaySeat().getId(),
                 ticket.getReturnSeat() == null ? null : ticket.getReturnSeat().getId());
     }
 
@@ -41,14 +39,11 @@ public class TicketController {
         Ticket createdTicket = ticketService.createTicket(requestTicketDto);
         return new ResponseTicketDto(
                 createdTicket.getId(),
-                createdTicket.getPrice(),
-                createdTicket.getOneWaySchedule().getId(),
+                createdTicket.getPrice(), createdTicket.getOneWaySchedule().getId(),
                 createdTicket.getReturnSchedule() == null ? null : createdTicket.getReturnSchedule().getId(),
-                createdTicket.getReservation().getId(),
-                createdTicket.getOneWayRoute().getId(),
+                createdTicket.getReservation().getId(), createdTicket.getOneWayRoute().getId(),
                 createdTicket.getReturnRoute() == null ? null : createdTicket.getReturnRoute().getId(),
-                createdTicket.getPassengerCategory().getId(),
-                createdTicket.getOneWaySeat().getId(),
+                createdTicket.getPassengerCategory().getId(), createdTicket.getOneWaySeat().getId(),
                 createdTicket.getReturnSeat() == null ? null : createdTicket.getReturnSeat().getId());
     }
 
@@ -59,9 +54,13 @@ public class TicketController {
     }
 
     @GetMapping
-    public Page<Ticket> getTicket(
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize) {
+    public Page<Ticket> getTicket(@RequestParam(defaultValue = "0") int pageNumber,
+                                  @RequestParam(defaultValue = "10") int pageSize) {
         return ticketService.getAllTicket(pageNumber, pageSize);
+    }
+
+    @GetMapping("/sumTotalPrice")
+    public float getTotalPrice(@RequestParam("reservationId") Long reservationId) {
+        return ticketService.getTotalPrice(reservationId);
     }
 }

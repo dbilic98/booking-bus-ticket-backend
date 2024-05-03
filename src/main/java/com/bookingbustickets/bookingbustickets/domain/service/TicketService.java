@@ -133,5 +133,9 @@ public class TicketService {
             throw new TicketNotFoundException("Ticket with ID " + id + " is not found");
         }
     }
+
+    public float getTotalPrice(Long reservationId){
+        return ticketRepository.getTotalPriceByReservationId(reservationId);
+    }
 }
 

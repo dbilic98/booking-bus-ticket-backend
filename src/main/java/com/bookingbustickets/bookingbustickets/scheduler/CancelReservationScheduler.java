@@ -15,7 +15,7 @@ public class CancelReservationScheduler {
         this.reservationService = reservationService;
     }
 
-    @Scheduled(fixedDelay = 30000)
+    @Scheduled(fixedDelay = 30_000)
     public void cancelReservations() {
         reservationService.cancelPendingReservations();
     }
