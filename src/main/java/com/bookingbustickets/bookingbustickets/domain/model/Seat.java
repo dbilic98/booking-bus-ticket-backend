@@ -1,5 +1,6 @@
 package com.bookingbustickets.bookingbustickets.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,18 +21,12 @@ public class Seat {
     @Column(columnDefinition = "TINYINT")
     private Short seatNumber;
 
-    private boolean isTaken;
-
-    @ManyToOne
-    @JoinColumn(name = "reservation_id")
-    private Reservation reservation;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "bus_id")
     private Bus bus;
 
     public Seat(Short seatNumber) {
         this.seatNumber = seatNumber;
-        this.isTaken = false;
     }
 }

@@ -1,6 +1,5 @@
 package com.bookingbustickets.bookingbustickets.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,7 +35,6 @@ public class Ticket {
     @JoinColumn(name = "one_way_route_id ")
     private Route oneWayRoute;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "return_route_id ")
     private Route returnRoute;
@@ -44,4 +42,12 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "passenger_category_id")
     private PassengerCategory passengerCategory;
+
+    @ManyToOne
+    @JoinColumn(name = "one_way_seat_id")
+    private Seat oneWaySeat;
+
+    @ManyToOne
+    @JoinColumn(name = "return_seat_id")
+    private Seat returnSeat;
 }
