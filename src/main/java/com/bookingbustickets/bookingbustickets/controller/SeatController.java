@@ -21,7 +21,7 @@ public class SeatController {
         this.seatService = seatService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<ResponseSeatDto> findSeats(
             @RequestParam("routeId") Long routeId,
             @RequestParam("scheduleId") Long scheduleId) {
