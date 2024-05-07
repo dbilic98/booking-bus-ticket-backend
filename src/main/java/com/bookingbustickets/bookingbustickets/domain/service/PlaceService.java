@@ -6,6 +6,7 @@ import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository
 import com.bookingbustickets.bookingbustickets.exception.PlaceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,6 +16,10 @@ public class PlaceService {
 
     public PlaceService(PlaceRepository placeRepository) {
         this.placeRepository = placeRepository;
+    }
+
+    public List<Place> findAllPlaces(){
+        return placeRepository.findAll();
     }
 
     public Place findPlaceById(Long id) {
