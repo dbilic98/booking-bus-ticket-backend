@@ -16,7 +16,7 @@ public class SeatService {
     }
 
     public List<Seat> findSeatsByRouteAndSchedule(Long routeId, Long scheduleId){
-        return seatRepository.findSeatsByRouteAndSchedule(routeId, scheduleId);
+        return seatRepository.findAvailableSeatsByRouteAndSchedule(routeId, scheduleId);
     }
 }
 
