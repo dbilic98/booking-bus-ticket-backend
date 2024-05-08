@@ -19,6 +19,13 @@ public class PassengerCategoryController {
         this.passengerCategoryService = passengerCategoryService;
     }
 
+    @GetMapping
+    public Page<PassengerCategory> getPassengerCategories(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return passengerCategoryService.findAllPassengerCategories(pageNumber, pageSize);
+    }
+
     @GetMapping("/{id}")
     public ResponsePassengerCategoryDto findPassengerCategoryById(@PathVariable Long id) {
         PassengerCategory passengerCategory = passengerCategoryService.findPassengerCategoryById(id);
@@ -52,12 +59,5 @@ public class PassengerCategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePassengerCategory(@PathVariable("id") Long id) {
         passengerCategoryService.deletePassengerCategory(id);
-    }
-
-    @GetMapping
-    public Page<PassengerCategory> getPassengerCategories(
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize) {
-        return passengerCategoryService.getAllPassengerCategories(pageNumber, pageSize);
     }
 }

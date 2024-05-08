@@ -20,6 +20,11 @@ public class PassengerCategoryService {
         this.passengerCategoryRepository = passengerCategoryRepository;
     }
 
+    public Page<PassengerCategory> findAllPassengerCategories(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return passengerCategoryRepository.findAll(pageable);
+    }
+
     public PassengerCategory findPassengerCategoryById(Long id) {
         Optional<PassengerCategory> optionalPassengerCategory = passengerCategoryRepository.findById(id);
         if (optionalPassengerCategory.isEmpty()) {
@@ -46,10 +51,5 @@ public class PassengerCategoryService {
         } else {
             throw new PassengerCategoryNotFoundException("Passenger Category with ID " + id + " is not found");
         }
-    }
-
-    public Page<PassengerCategory> getAllPassengerCategories(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return passengerCategoryRepository.findAll(pageable);
     }
 }
