@@ -7,6 +7,7 @@ import com.bookingbustickets.bookingbustickets.domain.model.Schedule;
 import com.bookingbustickets.bookingbustickets.domain.repository.BusRepository;
 import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
 import com.bookingbustickets.bookingbustickets.domain.repository.ScheduleRepository;
+import com.bookingbustickets.bookingbustickets.exception.BusNotFoundException;
 import com.bookingbustickets.bookingbustickets.exception.RouteNotFoundException;
 import com.bookingbustickets.bookingbustickets.exception.ScheduleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class ScheduleService {
         }
         Optional<Bus> optionalBus = busRepository.findById(requestScheduleDto.getBusId());
         if(optionalBus.isEmpty()){
-            throw new RuntimeException("Bus with the given ID is not found");
+            throw new BusNotFoundException("Bus with the given ID is not found");
         }
         Schedule createdSchedule = new Schedule(requestScheduleDto.getScheduleDate(), requestScheduleDto.getDepartureTime(), requestScheduleDto.getArrivalTime(), optionalRoute.get(), optionalBus.get());
         return scheduleRepository.save(createdSchedule);
