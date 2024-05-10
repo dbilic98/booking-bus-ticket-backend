@@ -5,11 +5,9 @@ import com.bookingbustickets.bookingbustickets.controller.response.ResponsePlace
 import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.service.PlaceService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/places")
@@ -22,18 +20,10 @@ public class PlaceController {
     }
 
     @GetMapping
-    public List<ResponsePlaceDto> findAllPlaces(){
-        List<Place> placeList = placeService.findAllPlaces();
-        List<ResponsePlaceDto> responsePlaceDtoList = new ArrayList<>();
-
-        for(Place place : placeList){
-            ResponsePlaceDto responsePlaceDto = new ResponsePlaceDto(
-                    place.getId(),
-                    place.getPlaceName()
-            );
-            responsePlaceDtoList.add(responsePlaceDto);
-        }
-        return responsePlaceDtoList;
+    public Page<Place> getPlaces(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return placeService.getAllPlaces(pageNumber, pageSize);
     }
 
     @GetMapping("/{id}")

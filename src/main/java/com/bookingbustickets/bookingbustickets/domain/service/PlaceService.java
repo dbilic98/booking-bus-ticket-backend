@@ -4,9 +4,11 @@ import com.bookingbustickets.bookingbustickets.controller.request.RequestPlaceDt
 import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
 import com.bookingbustickets.bookingbustickets.exception.PlaceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,8 +20,9 @@ public class PlaceService {
         this.placeRepository = placeRepository;
     }
 
-    public List<Place> findAllPlaces(){
-        return placeRepository.findAll();
+    public Page<Place> getAllPlaces(int pageNumber, int pageSize){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return placeRepository.findAll(pageable);
     }
 
     public Place findPlaceById(Long id) {
