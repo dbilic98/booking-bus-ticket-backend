@@ -35,17 +35,17 @@ public class TicketService {
         this.seatRepository = seatRepository;
     }
 
+    public Page<Ticket> getAllTickets(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return ticketRepository.findAll(pageable);
+    }
+
     public Ticket findTicketById(Long id) {
         Optional<Ticket> optionalTicket = ticketRepository.findById(id);
         if (optionalTicket.isEmpty()) {
             throw new TicketNotFoundException("Ticket with ID " + id + " is not found");
         }
         return optionalTicket.get();
-    }
-
-    public Page<Ticket> getAllTicket(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return ticketRepository.findAll(pageable);
     }
 
     public void calculatePrice(Ticket ticket, Route oneWayRoute, Route returnRoute, PassengerCategory passengerCategory) {

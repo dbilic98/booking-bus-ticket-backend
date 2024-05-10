@@ -19,6 +19,13 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
+    @GetMapping
+    public Page<Ticket> getTickets(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return ticketService.getAllTickets(pageNumber, pageSize);
+    }
+
     @GetMapping("/{id}")
     public ResponseTicketDto findTicketById(@PathVariable("id") Long id) {
         Ticket ticket = ticketService.findTicketById(id);
@@ -51,12 +58,6 @@ public class TicketController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTicket(@PathVariable("id") Long id) {
         ticketService.deleteTicket(id);
-    }
-
-    @GetMapping
-    public Page<Ticket> getTicket(@RequestParam(defaultValue = "0") int pageNumber,
-                                  @RequestParam(defaultValue = "10") int pageSize) {
-        return ticketService.getAllTicket(pageNumber, pageSize);
     }
 
     @GetMapping("/sumTotalPrice")

@@ -20,7 +20,7 @@ public class PassengerCategoryService {
         this.passengerCategoryRepository = passengerCategoryRepository;
     }
 
-    public Page<PassengerCategory> findAllPassengerCategories(int pageNumber, int pageSize) {
+    public Page<PassengerCategory> getAllPassengerCategories(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return passengerCategoryRepository.findAll(pageable);
     }

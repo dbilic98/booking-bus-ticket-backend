@@ -23,7 +23,7 @@ public class PassengerCategoryController {
     public Page<PassengerCategory> getPassengerCategories(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize) {
-        return passengerCategoryService.findAllPassengerCategories(pageNumber, pageSize);
+        return passengerCategoryService.getAllPassengerCategories(pageNumber, pageSize);
     }
 
     @GetMapping("/{id}")
