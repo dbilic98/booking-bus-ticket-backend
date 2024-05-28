@@ -23,15 +23,14 @@ public class Bus {
 
     private String licensePlate;
 
-    @OneToMany(mappedBy = "bus")
+    @OneToMany(mappedBy = "bus", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
     @OneToMany(mappedBy = "bus")
     private List<Schedule> schedules;
 
-    public Bus(String model, String licensePlate, List<Seat> seats) {
+    public Bus(String model, String licensePlate) {
         this.model = model;
         this.licensePlate = licensePlate;
-        this.seats = seats;
     }
 }

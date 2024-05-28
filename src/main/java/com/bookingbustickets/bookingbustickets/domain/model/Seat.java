@@ -26,7 +26,8 @@ public class Seat {
     @JoinColumn(name = "bus_id")
     private Bus bus;
 
-    public Seat(Short seatNumber) {
+    public Seat(Short seatNumber, Bus bus) {
         this.seatNumber = seatNumber;
+        this.bus = bus;
     }
 }

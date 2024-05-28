@@ -19,13 +19,14 @@ public class BusService {
     }
 
     public Bus createBus(RequestBusDto requestBusDto) {
+        Bus createdBus = new Bus(requestBusDto.getModel(), requestBusDto.getLicensePlate());
         int numberOfSeats = requestBusDto.getSeats();
         List<Seat> seats = new ArrayList<>();
         for (int i = 0; i < numberOfSeats; i++) {
-            Seat seat = new Seat((short) (i + 1));
+            Seat seat = new Seat((short) (i + 1), createdBus);
             seats.add(seat);
         }
-        Bus createdBus = new Bus(requestBusDto.getModel(), requestBusDto.getLicensePlate(), seats);
+        createdBus.setSeats(seats);
         return busRepository.save(createdBus);
     }
 }
