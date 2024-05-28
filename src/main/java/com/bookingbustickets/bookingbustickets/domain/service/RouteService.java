@@ -5,12 +5,8 @@ import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
 import com.bookingbustickets.bookingbustickets.domain.repository.RouteRepository;
-import org.springframework.dao.EmptyResultDataAccessException;
 import com.bookingbustickets.bookingbustickets.exception.PlaceNotFoundException;
 import com.bookingbustickets.bookingbustickets.exception.RouteNotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
