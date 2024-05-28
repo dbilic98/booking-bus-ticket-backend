@@ -1,6 +1,7 @@
 package com.bookingbustickets.bookingbustickets.controller;
 
 import com.bookingbustickets.bookingbustickets.controller.request.RequestPlaceDto;
+import com.bookingbustickets.bookingbustickets.controller.response.PaginatedResponse;
 import com.bookingbustickets.bookingbustickets.controller.response.ResponsePlaceDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.service.PlaceService;
@@ -20,12 +21,19 @@ public class PlaceController {
     }
 
     @GetMapping
-    public Page<Place> getPlaces(
+    public PaginatedResponse<ResponsePlaceDto> getPlaces(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize) {
-        return placeService.getAllPlaces(pageNumber, pageSize);
+        Page<Place> allPlaces = placeService.getAllPlaces(pageNumber, pageSize);
+        Page<ResponsePlaceDto> map = allPlaces.map(this::toResponseDto);
+        return new PaginatedResponse<>(map);
     }
 
+    private ResponsePlaceDto toResponseDto(Place place) {
+        return new ResponsePlaceDto(
+                place.getId(),
+                place.getPlaceName());
+    }
     @GetMapping("/{id}")
     public ResponsePlaceDto findPlaceById(@PathVariable("id") Long id) {
         Place place = placeService.findPlaceById(id);

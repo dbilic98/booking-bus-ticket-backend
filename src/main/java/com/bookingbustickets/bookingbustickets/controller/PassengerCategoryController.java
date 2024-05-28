@@ -1,6 +1,7 @@
 package com.bookingbustickets.bookingbustickets.controller;
 
 import com.bookingbustickets.bookingbustickets.controller.request.RequestPassengerCategoryDto;
+import com.bookingbustickets.bookingbustickets.controller.response.PaginatedResponse;
 import com.bookingbustickets.bookingbustickets.controller.response.ResponsePassengerCategoryDto;
 import com.bookingbustickets.bookingbustickets.domain.model.PassengerCategory;
 import com.bookingbustickets.bookingbustickets.domain.service.PassengerCategoryService;
@@ -20,10 +21,20 @@ public class PassengerCategoryController {
     }
 
     @GetMapping
-    public Page<PassengerCategory> getPassengerCategories(
+    public PaginatedResponse<ResponsePassengerCategoryDto> getPassengerCategories(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize) {
-        return passengerCategoryService.getAllPassengerCategories(pageNumber, pageSize);
+        Page<PassengerCategory> allPassengerCategory = passengerCategoryService.getAllPassengerCategories(pageNumber, pageSize);
+        Page<ResponsePassengerCategoryDto> map = allPassengerCategory.map(this::toResponseDto);
+        return new PaginatedResponse<>(map);
+    }
+
+    private ResponsePassengerCategoryDto toResponseDto(PassengerCategory passengerCategory){
+        return new ResponsePassengerCategoryDto(
+                passengerCategory.getId(),
+                passengerCategory.getCategoryName(),
+                passengerCategory.getDiscountPercentage()
+        );
     }
 
     @GetMapping("/{id}")
