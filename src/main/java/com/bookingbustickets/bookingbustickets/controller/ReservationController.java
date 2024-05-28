@@ -1,10 +1,12 @@
 package com.bookingbustickets.bookingbustickets.controller;
 
+import com.bookingbustickets.bookingbustickets.controller.response.PaginatedResponse;
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseReservationDto;
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseTicketDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Reservation;
 import com.bookingbustickets.bookingbustickets.domain.model.Ticket;
 import com.bookingbustickets.bookingbustickets.domain.service.ReservationService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,21 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
+    @GetMapping
+    public PaginatedResponse<ResponseReservationDto> getReservations(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize){
+        Page<Reservation> allReservations = reservationService.getAllReservations(pageNumber, pageSize);
+        Page<ResponseReservationDto> map = allReservations.map(this::toResponseDto);
+        return new PaginatedResponse<>(map);
+    }
+
+    private ResponseReservationDto toResponseDto(Reservation reservation) {
+        return new ResponseReservationDto(
+                reservation.getId(),
+                reservation.getDateOfReservation(),
+                reservation.getStatus());
+    }
     @GetMapping("/{id}")
     public ResponseReservationDto findReservationById(@PathVariable Long id) {
         Reservation reservation = reservationService.findReservationById(id);
@@ -51,10 +68,7 @@ public class ReservationController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseReservationDto createReservation() {
         Reservation createdReservation = reservationService.createReservation();
-        return new ResponseReservationDto(
-                createdReservation.getId(),
-                createdReservation.getDateOfReservation(),
-                createdReservation.getStatus());
+        return toResponseDto(createdReservation);
     }
 
     @PutMapping("/confirm/{id}")

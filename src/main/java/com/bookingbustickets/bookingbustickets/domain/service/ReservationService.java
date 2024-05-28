@@ -6,6 +6,9 @@ import com.bookingbustickets.bookingbustickets.exception.ExpiredReservationExcep
 import com.bookingbustickets.bookingbustickets.exception.InvalidReservationException;
 import com.bookingbustickets.bookingbustickets.exception.ReservationNotFoundException;
 import com.bookingbustickets.bookingbustickets.exception.ReservationStatusException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +27,10 @@ public class ReservationService {
         this.reservationRepository = reservationRepository;
     }
 
+    public Page<Reservation> getAllReservations(int pageNumber, int pageSize){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return reservationRepository.findAll(pageable);
+    }
     public Reservation findReservationById(Long id) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
         if (optionalReservation.isEmpty()) {
