@@ -1,6 +1,7 @@
 package com.bookingbustickets.bookingbustickets.controller;
 
 import com.bookingbustickets.bookingbustickets.controller.request.RequestTicketDto;
+import com.bookingbustickets.bookingbustickets.controller.response.PaginatedResponse;
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseTicketDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Ticket;
 import com.bookingbustickets.bookingbustickets.domain.service.TicketService;
@@ -20,38 +21,39 @@ public class TicketController {
     }
 
     @GetMapping
-    public Page<Ticket> getTickets(
+    public PaginatedResponse<ResponseTicketDto> getTickets(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize) {
-        return ticketService.getAllTickets(pageNumber, pageSize);
+        Page<Ticket> allTickets = ticketService.getAllTickets(pageNumber, pageSize);
+        Page<ResponseTicketDto> map = allTickets.map(this::toResponseDto);
+        return new PaginatedResponse<>(map);
     }
 
-    @GetMapping("/{id}")
-    public ResponseTicketDto findTicketById(@PathVariable("id") Long id) {
-        Ticket ticket = ticketService.findTicketById(id);
+    private ResponseTicketDto toResponseDto(Ticket ticket) {
         return new ResponseTicketDto(
                 ticket.getId(),
                 ticket.getPrice(),
                 ticket.getOneWaySchedule().getId(),
                 ticket.getReturnSchedule() == null ? null : ticket.getReturnSchedule().getId(),
                 ticket.getReservation().getId(),
-                ticket.getOneWayRoute().getId(), ticket.getReturnRoute() == null ? null : ticket.getReturnRoute().getId(),
-                ticket.getPassengerCategory().getId(), ticket.getOneWaySeat().getId(),
+                ticket.getOneWayRoute().getId(),
+                ticket.getReturnRoute() == null ? null : ticket.getReturnRoute().getId(),
+                ticket.getPassengerCategory().getId(),
+                ticket.getOneWaySeat().getId(),
                 ticket.getReturnSeat() == null ? null : ticket.getReturnSeat().getId());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseTicketDto findTicketById(@PathVariable("id") Long id) {
+        Ticket ticket = ticketService.findTicketById(id);
+       return toResponseDto(ticket);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseTicketDto createTicket(@Valid @RequestBody RequestTicketDto requestTicketDto) {
         Ticket createdTicket = ticketService.createTicket(requestTicketDto);
-        return new ResponseTicketDto(
-                createdTicket.getId(),
-                createdTicket.getPrice(), createdTicket.getOneWaySchedule().getId(),
-                createdTicket.getReturnSchedule() == null ? null : createdTicket.getReturnSchedule().getId(),
-                createdTicket.getReservation().getId(), createdTicket.getOneWayRoute().getId(),
-                createdTicket.getReturnRoute() == null ? null : createdTicket.getReturnRoute().getId(),
-                createdTicket.getPassengerCategory().getId(), createdTicket.getOneWaySeat().getId(),
-                createdTicket.getReturnSeat() == null ? null : createdTicket.getReturnSeat().getId());
+        return toResponseDto(createdTicket);
     }
 
     @DeleteMapping("/{id}")
