@@ -1,0 +1,6 @@
+package com.bookingbustickets.bookingbustickets.exception;
+
+public class CompanyNotFoundException extends RuntimeException {
+
+    public CompanyNotFoundException(String message) { super(message); }
+}
