@@ -51,9 +51,9 @@ public class PlaceController {
                 createdPlace.getPlaceName());
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponsePlaceDto updatePlace(@Valid @PathVariable("id") Long id, @RequestBody RequestPlaceDto requestPlaceDto) {
+    public ResponsePlaceDto updatePlace(@PathVariable("id") Long id, @Valid @RequestBody RequestPlaceDto requestPlaceDto) {
         Place updatedPlace = placeService.updatePlace(id, requestPlaceDto);
         return new ResponsePlaceDto(
                 updatedPlace.getId(),
