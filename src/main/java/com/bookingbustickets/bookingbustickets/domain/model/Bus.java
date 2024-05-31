@@ -23,6 +23,10 @@ public class Bus {
 
     private String licensePlate;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company companyName;
+
     @OneToMany(mappedBy = "bus", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
