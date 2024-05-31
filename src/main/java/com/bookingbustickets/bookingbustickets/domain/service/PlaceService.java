@@ -34,13 +34,13 @@ public class PlaceService {
     }
 
     public Place createPlace(RequestPlaceDto requestPlaceDto) {
-        Place createdPlace = new Place(requestPlaceDto.getPlaceName());
+        Place createdPlace = new Place(requestPlaceDto.placeName());
         return placeRepository.save(createdPlace);
     }
 
     public Place updatePlace(Long id, RequestPlaceDto requestPlaceDto) {
         Place placeToUpdate = findPlaceById(id);
-        placeToUpdate.setPlaceName(requestPlaceDto.getPlaceName());
+        placeToUpdate.setPlaceName(requestPlaceDto.placeName());
         return placeRepository.save(placeToUpdate);
     }
 
