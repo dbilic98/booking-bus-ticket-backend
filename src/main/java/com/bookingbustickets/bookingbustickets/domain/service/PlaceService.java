@@ -1,6 +1,7 @@
 package com.bookingbustickets.bookingbustickets.domain.service;
 
 import com.bookingbustickets.bookingbustickets.controller.request.RequestPlaceDto;
+import com.bookingbustickets.bookingbustickets.controller.response.ResponsePlaceDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Place;
 import com.bookingbustickets.bookingbustickets.domain.repository.PlaceRepository;
 import com.bookingbustickets.bookingbustickets.exception.PlaceNotFoundException;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +26,16 @@ public class PlaceService {
     public Page<Place> getAllPlaces(int pageNumber, int pageSize){
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return placeRepository.findAll(pageable);
+    }
+    public List<ResponsePlaceDto> findPlacesByPrefix(String prefix) {
+        List<Place> places = placeRepository.findByPlaceNameStartingWith(prefix);
+        List<ResponsePlaceDto> responsePlaceDtos = new ArrayList<>();
+
+        for (Place place : places) {
+            responsePlaceDtos.add(new ResponsePlaceDto(place.getId(), place.getPlaceName()));
+        }
+
+        return responsePlaceDtos;
     }
 
     public Place findPlaceById(Long id) {

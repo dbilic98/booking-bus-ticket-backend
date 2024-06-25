@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/places")
 public class PlaceController {
@@ -34,6 +36,12 @@ public class PlaceController {
                 place.getId(),
                 place.getPlaceName());
     }
+
+    @GetMapping("/search")
+    public List<ResponsePlaceDto> getPlacesByPrefix(@RequestParam String prefix) {
+        return placeService.findPlacesByPrefix(prefix);
+    }
+
     @GetMapping("/{id}")
     public ResponsePlaceDto findPlaceById(@PathVariable("id") Long id) {
         Place place = placeService.findPlaceById(id);
