@@ -17,7 +17,8 @@ public interface RouteRepository extends JpaRepository<Route, Long> {
             "JOIN FETCH r.scheduleList s " +
             "WHERE r.startPlace.id = :startPlaceId " +
             "AND r.endPlace.id = :endPlaceId " +
-            "AND (s.scheduleDate = :scheduleDate AND (:scheduleDate <> CURRENT_DATE OR s.departureTime > CURRENT_TIME))")
+            "AND (s.scheduleDate > CURRENT_DATE OR (s.scheduleDate = :scheduleDate AND s.departureTime > CURRENT_TIME))")
+
     List<Route> findRoutesBetweenPlacesAndDate(@Param("startPlaceId") Long startPlaceId,
                                                @Param("endPlaceId") Long endPlaceId,
                                                @Param("scheduleDate") LocalDate scheduleDate);
