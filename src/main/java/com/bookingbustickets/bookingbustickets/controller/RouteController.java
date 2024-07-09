@@ -6,6 +6,7 @@ import com.bookingbustickets.bookingbustickets.controller.response.ResponseSched
 import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.model.Schedule;
 import com.bookingbustickets.bookingbustickets.domain.service.RouteService;
+import com.bookingbustickets.bookingbustickets.exception.ScheduleDateException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +72,10 @@ public class RouteController {
             @RequestParam("endPlaceId") Long endPlaceId,
             @RequestParam("scheduleDate") LocalDate startScheduleDate,
             @RequestParam(value = "endScheduleDate", required = false) LocalDate endScheduleDate) {
+
+        if (endScheduleDate != null && endScheduleDate.isBefore(startScheduleDate)) {
+            throw new ScheduleDateException("End schedule date cannot be before start schedule date.");
+        }
 
         List<Route> oneWayRoutes = routeService.findFilteredRoutes(startPlaceId, endPlaceId, startScheduleDate);
 
