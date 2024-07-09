@@ -74,33 +74,39 @@ public class RouteController {
 
         List<Route> oneWayRoutes = routeService.findFilteredRoutes(startPlaceId, endPlaceId, startScheduleDate);
 
-        if (oneWayRoutes.isEmpty()) {
-            return List.of();
-        }
-
         if (endScheduleDate == null) {
-            return mapRoutesToResponseRouteDtos(oneWayRoutes);
+            return mapRoutesToResponseRouteDtos(oneWayRoutes, startScheduleDate);
         }
 
         List<Route> returnRoutes = routeService.findFilteredRoutes(endPlaceId, startPlaceId, endScheduleDate);
-
-        if (returnRoutes.isEmpty()) {
-            return List.of();
-        }
 
         List<Route> mergedRoutes = new ArrayList<>(oneWayRoutes.size() + returnRoutes.size());
         mergedRoutes.addAll(oneWayRoutes);
         mergedRoutes.addAll(returnRoutes);
 
-        return mapRoutesToResponseRouteDtos(mergedRoutes);
+        return mapRoutesToResponseRouteDtos(mergedRoutes, startScheduleDate, endScheduleDate);
     }
 
-    private List<ResponseRouteDto> mapRoutesToResponseRouteDtos(List<Route> routes) {
+    private List<ResponseRouteDto> mapRoutesToResponseRouteDtos(List<Route> routes, LocalDate scheduleDate) {
         List<ResponseRouteDto> responseRouteDtos = new ArrayList<>();
         for (Route route : routes) {
-            List<ResponseScheduleDto> scheduleListDto = mapToResponseScheduleDto(route.getScheduleList());
-            ResponseRouteDto routeDto = mapToResponseRouteDto(route, scheduleListDto);
-            responseRouteDtos.add(routeDto);
+            List<ResponseScheduleDto> scheduleListDto = mapToResponseScheduleDto(route.getScheduleList(), scheduleDate);
+            if (!scheduleListDto.isEmpty()) {
+                ResponseRouteDto routeDto = mapToResponseRouteDto(route, scheduleListDto);
+                responseRouteDtos.add(routeDto);
+            }
+        }
+        return responseRouteDtos;
+    }
+
+    private List<ResponseRouteDto> mapRoutesToResponseRouteDtos(List<Route> routes, LocalDate startScheduleDate, LocalDate endScheduleDate) {
+        List<ResponseRouteDto> responseRouteDtos = new ArrayList<>();
+        for (Route route : routes) {
+            List<ResponseScheduleDto> scheduleListDto = mapToResponseScheduleDto(route.getScheduleList(), startScheduleDate, endScheduleDate);
+            if (!scheduleListDto.isEmpty()) {
+                ResponseRouteDto routeDto = mapToResponseRouteDto(route, scheduleListDto);
+                responseRouteDtos.add(routeDto);
+            }
         }
         return responseRouteDtos;
     }
@@ -115,17 +121,34 @@ public class RouteController {
                 scheduleListDto);
     }
 
-    private List<ResponseScheduleDto> mapToResponseScheduleDto(List<Schedule> scheduleList) {
+    private List<ResponseScheduleDto> mapToResponseScheduleDto(List<Schedule> scheduleList, LocalDate scheduleDate) {
         List<ResponseScheduleDto> responseScheduleDtos = new ArrayList<>();
-
         for (Schedule schedule : scheduleList) {
-            ResponseScheduleDto scheduleDto = new ResponseScheduleDto(
-                    schedule.getId(),
-                    schedule.getScheduleDate(),
-                    schedule.getDepartureTime(),
-                    schedule.getArrivalTime());
-            responseScheduleDtos.add(scheduleDto);
+            if (schedule.getScheduleDate().isEqual(scheduleDate)) {
+                ResponseScheduleDto scheduleDto = new ResponseScheduleDto(
+                        schedule.getId(),
+                        schedule.getScheduleDate(),
+                        schedule.getDepartureTime(),
+                        schedule.getArrivalTime());
+                responseScheduleDtos.add(scheduleDto);
+            }
         }
         return responseScheduleDtos;
     }
+
+    private List<ResponseScheduleDto> mapToResponseScheduleDto(List<Schedule> scheduleList, LocalDate startScheduleDate, LocalDate endScheduleDate) {
+        List<ResponseScheduleDto> responseScheduleDtos = new ArrayList<>();
+        for (Schedule schedule : scheduleList) {
+            if (schedule.getScheduleDate().isEqual(startScheduleDate) || schedule.getScheduleDate().isEqual(endScheduleDate)) {
+                ResponseScheduleDto scheduleDto = new ResponseScheduleDto(
+                        schedule.getId(),
+                        schedule.getScheduleDate(),
+                        schedule.getDepartureTime(),
+                        schedule.getArrivalTime());
+                responseScheduleDtos.add(scheduleDto);
+            }
+        }
+        return responseScheduleDtos;
+    }
+
 }
