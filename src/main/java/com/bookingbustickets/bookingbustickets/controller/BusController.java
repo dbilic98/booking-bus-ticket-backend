@@ -2,6 +2,7 @@ package com.bookingbustickets.bookingbustickets.controller;
 
 import com.bookingbustickets.bookingbustickets.controller.request.RequestBusDto;
 import com.bookingbustickets.bookingbustickets.domain.service.BusService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ public class BusController {
     }
 
     @PostMapping
-    public void createBus(@RequestBody RequestBusDto requestBusDto){
+    public void createBus(@RequestBody @Valid RequestBusDto requestBusDto) {
         busService.createBus(requestBusDto);
     }
 }

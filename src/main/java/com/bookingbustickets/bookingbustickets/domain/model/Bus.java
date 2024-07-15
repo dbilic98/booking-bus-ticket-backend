@@ -25,7 +25,7 @@ public class Bus {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
-    private Company companyName;
+    private Company company;
 
     @OneToMany(mappedBy = "bus", cascade = CascadeType.ALL)
     private List<Seat> seats;
@@ -33,8 +33,9 @@ public class Bus {
     @OneToMany(mappedBy = "bus")
     private List<Schedule> schedules;
 
-    public Bus(String model, String licensePlate) {
+    public Bus(String model, String licensePlate, Company company) {
         this.model = model;
         this.licensePlate = licensePlate;
+        this.company = company;
     }
 }
