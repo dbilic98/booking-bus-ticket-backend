@@ -134,7 +134,8 @@ public class RouteController {
                         schedule.getId(),
                         schedule.getScheduleDate(),
                         schedule.getDepartureTime(),
-                        schedule.getArrivalTime());
+                        schedule.getArrivalTime(),
+                        schedule.getBus().getCompany().getCompanyName());
                 responseScheduleDtos.add(scheduleDto);
             }
         }
@@ -149,7 +150,8 @@ public class RouteController {
                         schedule.getId(),
                         schedule.getScheduleDate(),
                         schedule.getDepartureTime(),
-                        schedule.getArrivalTime());
+                        schedule.getArrivalTime(),
+                        schedule.getBus().getCompany().getCompanyName());
                 responseScheduleDtos.add(scheduleDto);
             }
         }
