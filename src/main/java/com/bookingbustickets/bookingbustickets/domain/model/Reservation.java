@@ -1,18 +1,17 @@
 package com.bookingbustickets.bookingbustickets.domain.model;
 
+import static com.bookingbustickets.bookingbustickets.domain.enumeration.ReservationStatus.PENDING;
+
 import com.bookingbustickets.bookingbustickets.domain.enumeration.ReservationStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.bookingbustickets.bookingbustickets.domain.enumeration.ReservationStatus.PENDING;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -29,6 +28,9 @@ public class Reservation {
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<Ticket> tickets = new ArrayList<>();
