@@ -22,7 +22,7 @@ public class CompanyController {
     @GetMapping
     public PaginatedResponse<ResponseCompanyDto> getCompanies (
             @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize) {
+            @RequestParam(defaultValue = "25") int pageSize) {
         Page<Company> allCompanies = companyService.getAllCompanies(pageNumber, pageSize);
         Page<ResponseCompanyDto> map = allCompanies.map(this::toResponseDto);
         return new PaginatedResponse<>(map);
