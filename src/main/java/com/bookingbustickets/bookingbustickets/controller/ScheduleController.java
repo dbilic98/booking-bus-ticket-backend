@@ -1,10 +1,12 @@
 package com.bookingbustickets.bookingbustickets.controller;
 
 import com.bookingbustickets.bookingbustickets.controller.request.RequestScheduleDto;
+import com.bookingbustickets.bookingbustickets.controller.response.PaginatedResponse;
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseScheduleDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Schedule;
 import com.bookingbustickets.bookingbustickets.domain.service.ScheduleService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,23 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
+    @GetMapping()
+    public PaginatedResponse<ResponseScheduleDto> getSchedules (
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "25") int pageSize) {
+        Page<Schedule> allSchedules = scheduleService.getAllSchedules(pageNumber, pageSize);
+        Page<ResponseScheduleDto> map = allSchedules.map(this::toResponseDto);
+        return new PaginatedResponse<>(map);
+    }
+    private ResponseScheduleDto toResponseDto(Schedule schedule) {
+        return new ResponseScheduleDto(
+                schedule.getId(),
+                schedule.getScheduleDate(),
+                schedule.getDepartureTime(),
+                schedule.getArrivalTime(),
+                schedule.getRoute().getId(),
+                schedule.getBus().getCompany().getCompanyName());
+    }
     @GetMapping("/{id}")
     public ResponseScheduleDto findScheduleById(@PathVariable Long id) {
         Schedule schedule = scheduleService.findScheduleById(id);

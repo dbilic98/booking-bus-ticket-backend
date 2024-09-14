@@ -1,6 +1,7 @@
 package com.bookingbustickets.bookingbustickets.controller;
 
 import com.bookingbustickets.bookingbustickets.controller.request.RequestRouteDto;
+import com.bookingbustickets.bookingbustickets.controller.response.PaginatedResponse;
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseRouteDto;
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseScheduleDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Route;
@@ -8,6 +9,7 @@ import com.bookingbustickets.bookingbustickets.domain.model.Schedule;
 import com.bookingbustickets.bookingbustickets.domain.service.RouteService;
 import com.bookingbustickets.bookingbustickets.exception.ScheduleDateException;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,22 @@ public class RouteController {
         this.routeService = routeService;
     }
 
+    @GetMapping("/admin")
+    public PaginatedResponse<ResponseRouteDto> getRoutes (
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "25") int pageSize) {
+        Page<Route> allRoutes = routeService.getAllRoutes(pageNumber, pageSize);
+        Page<ResponseRouteDto> map = allRoutes.map(this::toResponseDto);
+        return new PaginatedResponse<>(map);
+    }
+    private ResponseRouteDto toResponseDto(Route route) {
+        return new ResponseRouteDto(
+                route.getId(),
+                route.getBasePrice(),
+                route.getTotalDistance(),
+                route.getStartPlace().getId(),
+                route.getEndPlace().getId());
+    }
     @GetMapping("/{id}")
     public ResponseRouteDto findRouteById(@PathVariable Long id) {
         Route route = routeService.findRouteById(id);
