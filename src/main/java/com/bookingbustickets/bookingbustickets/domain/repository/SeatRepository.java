@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Long> {
 
+    int countByBusId(Long busId);
+
     @Query("SELECT s " +
             "FROM Seat s " +
             "JOIN s.bus b " +
@@ -21,9 +23,10 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
             "LEFT JOIN t2.reservation r2 " +
             "WHERE sc.route.id = :routeId " +
             "AND sc.id = :scheduleId " +
-            "AND (r1.status = 'CANCELED' OR r2.status = 'CANCELED' OR (t1.oneWaySeat.id IS NULL AND t2.returnSeat.id IS NULL)) " +
-            "AND t1.oneWaySeat.id IS NULL " +
-            "AND t2.returnSeat.id IS NULL")
+            "AND (t1.id IS NULL OR r1.status = 'CANCELED') " +
+            "AND (t2.id IS NULL OR r2.status = 'CANCELED')")
     List<Seat> findAvailableSeatsByRouteAndSchedule(@Param("routeId") Long routeId,
                                                     @Param("scheduleId") Long scheduleId);
+
 }
+
