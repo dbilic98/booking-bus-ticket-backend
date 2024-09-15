@@ -1,5 +1,6 @@
 package com.bookingbustickets.bookingbustickets.domain.repository;
 
+import com.bookingbustickets.bookingbustickets.controller.response.ResponseSeatDto;
 import com.bookingbustickets.bookingbustickets.domain.model.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,12 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
 
     int countByBusId(Long busId);
 
-    @Query("SELECT s " +
+    @Query("SELECT new com.bookingbustickets.bookingbustickets.controller.response.ResponseSeatDto(s.id," +
+            "s.seatNumber, " +
+            "CASE WHEN (t1.id IS NULL AND t2.id IS NULL) THEN TRUE " +
+            "      WHEN (t1.id IS NOT NULL AND r1.status = 'CANCELED') THEN TRUE " +
+            "      WHEN (t2.id IS NOT NULL AND r2.status = 'CANCELED') THEN TRUE " +
+            "      ELSE FALSE END) " +
             "FROM Seat s " +
             "JOIN s.bus b " +
             "JOIN b.schedules sc " +
@@ -22,11 +28,9 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
             "LEFT JOIN t1.reservation r1 " +
             "LEFT JOIN t2.reservation r2 " +
             "WHERE sc.route.id = :routeId " +
-            "AND sc.id = :scheduleId " +
-            "AND (t1.id IS NULL OR r1.status = 'CANCELED') " +
-            "AND (t2.id IS NULL OR r2.status = 'CANCELED')")
-    List<Seat> findAvailableSeatsByRouteAndSchedule(@Param("routeId") Long routeId,
-                                                    @Param("scheduleId") Long scheduleId);
+            "AND sc.id = :scheduleId")
+    List<ResponseSeatDto> findAvailableSeatsByRouteAndSchedule(@Param("routeId") Long routeId,
+                                                               @Param("scheduleId") Long scheduleId);
 
 }
 
