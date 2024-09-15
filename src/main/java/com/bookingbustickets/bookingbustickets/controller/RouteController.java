@@ -8,14 +8,20 @@ import com.bookingbustickets.bookingbustickets.domain.model.Route;
 import com.bookingbustickets.bookingbustickets.domain.model.Schedule;
 import com.bookingbustickets.bookingbustickets.domain.service.RouteService;
 import com.bookingbustickets.bookingbustickets.exception.ScheduleDateException;
+import com.bookingbustickets.bookingbustickets.util.RoleBasedAccessHelper;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/routes")
@@ -28,6 +34,7 @@ public class RouteController {
     }
 
     @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
     public PaginatedResponse<ResponseRouteDto> getRoutes (
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "25") int pageSize) {
@@ -56,6 +63,7 @@ public class RouteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('ADMIN','COMPANY')")
     public ResponseRouteDto createRoute(@Valid @RequestBody RequestRouteDto requestRouteDto) {
         Route createdRoute = routeService.createRoute(requestRouteDto);
         return new ResponseRouteDto(
@@ -66,23 +74,49 @@ public class RouteController {
                 createdRoute.getEndPlace().getId());
     }
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseRouteDto updateRoute(@Valid @PathVariable("id") Long id, @RequestBody RequestRouteDto requestRouteDto) {
-        Route updatedRoute = routeService.updateRoute(id, requestRouteDto);
-        return new ResponseRouteDto(
-                updatedRoute.getId(),
-                updatedRoute.getBasePrice(),
-                updatedRoute.getTotalDistance(),
-                updatedRoute.getStartPlace().getId(),
-                updatedRoute.getEndPlace().getId());
+  @PutMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAnyRole('ADMIN','COMPANY')")
+  public ResponseRouteDto updateRoute(
+      @Valid @PathVariable("id") Long id, @RequestBody RequestRouteDto requestRouteDto) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Route updatedRoute;
+    if (RoleBasedAccessHelper.isAdmin(authentication)) {
+      updatedRoute = routeService.updateRoute(id, requestRouteDto);
+    } else if (RoleBasedAccessHelper.isCompany(authentication)) {
+      String companyUuid = authentication.getName();
+      Route route = routeService.findRouteById(id);
+      RoleBasedAccessHelper.checkCompanyAccess(
+          authentication,
+          UUID.fromString(companyUuid),
+          route.getScheduleList().get(0).getBus().getCompany().getCompanyUuid());
+      updatedRoute = routeService.updateRoute(id, requestRouteDto);
+    } else {
+      throw new AccessDeniedException("Access denied");
     }
+    return new ResponseRouteDto(
+        updatedRoute.getId(),
+        updatedRoute.getBasePrice(),
+        updatedRoute.getTotalDistance(),
+        updatedRoute.getStartPlace().getId(),
+        updatedRoute.getEndPlace().getId());
+  }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteRoute(@PathVariable("id") Long id) {
-        routeService.deleteRoute(id);
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PreAuthorize("hasAnyRole('ADMIN','COMPANY')")
+  public void deleteRoute(@PathVariable("id") Long id) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (RoleBasedAccessHelper.isCompany(authentication)) {
+      String companyUuid = authentication.getName();
+      Route route = routeService.findRouteById(id);
+      RoleBasedAccessHelper.checkCompanyAccess(
+          authentication,
+          UUID.fromString(companyUuid),
+          route.getScheduleList().get(0).getBus().getCompany().getCompanyUuid());
     }
+    routeService.deleteRoute(id);
+  }
 
     @GetMapping
     public List<ResponseRouteDto> findRoutes(
