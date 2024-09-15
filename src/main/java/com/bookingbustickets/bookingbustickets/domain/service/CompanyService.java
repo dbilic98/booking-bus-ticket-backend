@@ -10,14 +10,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final KeycloakService keycloakService;
 
-    public CompanyService(CompanyRepository companyRepository) {
+    public CompanyService(CompanyRepository companyRepository, KeycloakService keycloakService) {
         this.companyRepository = companyRepository;
+        this.keycloakService = keycloakService;
     }
 
     public Page<Company> getAllCompanies(int pageNumber, int pageSize) {
@@ -33,10 +36,12 @@ public class CompanyService {
         return companyOptional.get();
     }
 
-    public Company createCompany(RequestCompanyDto requestCompanyDto) {
-        Company createdCompany = new Company(requestCompanyDto.companyName());
-        return companyRepository.save(createdCompany);
-    }
+  public Company createCompany(RequestCompanyDto requestCompanyDto) {
+    UUID companyUuid = UUID.randomUUID();
+    keycloakService.registerCompanyUserOnKeycloak(requestCompanyDto, companyUuid.toString());
+    Company createdCompany = new Company(requestCompanyDto.companyName(), companyUuid);
+    return companyRepository.save(createdCompany);
+  }
 
     public Company updateCompany(Long id, RequestCompanyDto requestCompanyDto) {
         Company companyToUpdate = findCompanyById(id);

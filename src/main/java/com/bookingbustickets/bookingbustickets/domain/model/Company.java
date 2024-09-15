@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Entity
 @Getter
 @Setter
@@ -21,7 +23,10 @@ public class Company {
     private Long id;
 
     private String companyName;
+    private UUID companyUuid;
 
-    public Company(String companyName) {
-        this.companyName = companyName; }
+    public Company(String companyName, UUID companyUuid) {
+        this.companyName = companyName;
+        this.companyUuid = companyUuid;
+    }
 }
