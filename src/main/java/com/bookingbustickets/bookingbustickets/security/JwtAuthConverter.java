@@ -24,8 +24,6 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
             new JwtGrantedAuthoritiesConverter();
 
-    private static final String principleAttribute = "preferred_username";
-
     private static final String resourceId = "spring-boot-client";
 
     @Override
@@ -38,16 +36,20 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
         return new JwtAuthenticationToken(
                 jwt,
                 authorities,
-                getPrincipleClaimName(jwt)
+                getPrincipalClaimName(jwt, authorities)
         );
     }
 
-    private String getPrincipleClaimName(Jwt jwt) {
-        String claimName = JwtClaimNames.SUB;
-        if (principleAttribute != null) {
-            claimName = principleAttribute;
+    private String getPrincipalClaimName(Jwt jwt, Collection<GrantedAuthority> authorities) {
+        boolean isCompany = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_COMPANY"));
+        boolean isClient = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_CLIENT"));
+
+        if (isCompany) {
+            return jwt.getClaimAsString("companyUuid");
+        } else if (isClient) {
+            return jwt.getClaimAsString("userUuid");
         }
-        return jwt.getClaim(claimName);
+        return jwt.getClaimAsString(JwtClaimNames.SUB);
     }
 
     private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
