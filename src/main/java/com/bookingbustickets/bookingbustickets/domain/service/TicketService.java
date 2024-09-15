@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class TicketService {
@@ -38,6 +39,16 @@ public class TicketService {
     public Page<Ticket> getAllTickets(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return ticketRepository.findAll(pageable);
+    }
+
+    public Page<Ticket> getAllTicketsByCompanyUuid(int pageNumber, int pageSize, UUID companyUuid) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return ticketRepository.findAllByCompanyUuid(companyUuid, pageable);
+    }
+
+    public Page<Ticket> getAllTicketsByUserUuid(int pageNumber, int pageSize, UUID userUuid) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return ticketRepository.findAllByUserUuid(userUuid, pageable);
     }
 
     public Ticket findTicketById(Long id) {

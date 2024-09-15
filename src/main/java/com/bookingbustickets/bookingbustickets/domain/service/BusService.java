@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class BusService {
@@ -37,7 +38,10 @@ public class BusService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return busRepository.findAll(pageable);
     }
-
+    public Page<Bus> getBusesByCompany(String companyId, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return busRepository.findAllByCompanyCompanyUuid(UUID.fromString(companyId), pageable);
+    }
     public void createBus(RequestBusDto requestBusDto) {
         Optional<Company> optionalCompany = companyRepository.findById(requestBusDto.getCompanyId());
         if (optionalCompany.isEmpty()) {
@@ -84,5 +88,6 @@ public class BusService {
             throw new BusNotFoundException("Bus with ID " + id + "is not found");
         }
     }
+
 
 }

@@ -35,9 +35,10 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<Ticket> tickets = new ArrayList<>();
 
-    public Reservation(LocalDateTime dateOfReservation, ReservationStatus status) {
+    public Reservation(LocalDateTime dateOfReservation, ReservationStatus status, User user) {
         this.dateOfReservation = dateOfReservation;
         this.status = status;
+        this.user = user;
     }
 
     public boolean hasAnyTickets() {

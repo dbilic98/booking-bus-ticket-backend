@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ScheduleService {
@@ -37,6 +38,11 @@ public class ScheduleService {
     public Page<Schedule> getAllSchedules(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return scheduleRepository.findAll(pageable);
+    }
+
+    public Page<Schedule> getAllSchedulesByCompanyUuid(int pageNumber, int pageSize, UUID companyUuid) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return scheduleRepository.findAllByCompanyUuid(pageable, companyUuid);
     }
 
     public Schedule findScheduleById(Long id) {

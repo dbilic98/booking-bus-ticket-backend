@@ -28,4 +28,8 @@ public class UserService {
     return userRepository.save(
         new User(request.firstName(), request.lastName(), request.username(), userUuid));
   }
+
+    public Optional<User> findByUserUuid(UUID userUuid) {
+      return userRepository.findByUserUuid(userUuid);
+    }
 }

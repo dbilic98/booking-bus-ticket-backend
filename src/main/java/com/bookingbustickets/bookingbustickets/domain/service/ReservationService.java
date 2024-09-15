@@ -1,6 +1,7 @@
 package com.bookingbustickets.bookingbustickets.domain.service;
 
 import com.bookingbustickets.bookingbustickets.domain.model.Reservation;
+import com.bookingbustickets.bookingbustickets.domain.model.User;
 import com.bookingbustickets.bookingbustickets.domain.repository.ReservationRepository;
 import com.bookingbustickets.bookingbustickets.exception.ExpiredReservationException;
 import com.bookingbustickets.bookingbustickets.exception.InvalidReservationException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.bookingbustickets.bookingbustickets.domain.enumeration.ReservationStatus.CONFIRMED;
 import static com.bookingbustickets.bookingbustickets.domain.enumeration.ReservationStatus.PENDING;
@@ -39,12 +41,24 @@ public class ReservationService {
         return optionalReservation.get();
     }
 
-    public Reservation createReservation() {
-        Reservation createdReservation = new Reservation(LocalDateTime.now(), PENDING);
-        return reservationRepository.save(createdReservation);
-    }
+  public Page<Reservation> getAllReservationsByCompanyUuid(
+      int pageNumber, int pageSize, UUID companyUuid) {
+    Pageable pageable = PageRequest.of(pageNumber, pageSize);
+    return reservationRepository.findAllByCompanyId(companyUuid, pageable);
+  }
 
-    public void confirmReservation(Long id) {
+  public Page<Reservation> getAllReservationsByUserUuid(
+      int pageNumber, int pageSize, UUID userUuid) {
+    Pageable pageable = PageRequest.of(pageNumber, pageSize);
+    return reservationRepository.findAllByUserUserUuid(userUuid, pageable);
+  }
+
+  public Reservation createReservation(User user) {
+    Reservation createdReservation = new Reservation(LocalDateTime.now(), PENDING, user);
+    return reservationRepository.save(createdReservation);
+  }
+
+  public void confirmReservation(Long id) {
         Reservation reservation = findReservationById(id);
         validateReservation(reservation);
         reservation.setStatus(CONFIRMED);
