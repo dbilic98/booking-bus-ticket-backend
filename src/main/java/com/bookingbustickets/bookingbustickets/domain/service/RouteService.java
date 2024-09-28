@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class RouteService {
@@ -30,6 +31,11 @@ public class RouteService {
     public Page<Route> getAllRoutes(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return routeRepository.findAll(pageable);
+    }
+
+    public Page<Route> getAllRoutesByCompany(UUID companyUuid, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return routeRepository.findRoutesByCompanyUuid(companyUuid, pageable);
     }
 
     public Route findRouteById(Long id) {
