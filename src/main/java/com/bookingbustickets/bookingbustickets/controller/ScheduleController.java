@@ -3,14 +3,12 @@ package com.bookingbustickets.bookingbustickets.controller;
 import com.bookingbustickets.bookingbustickets.controller.request.RequestScheduleDto;
 import com.bookingbustickets.bookingbustickets.controller.response.PaginatedResponse;
 import com.bookingbustickets.bookingbustickets.controller.response.ResponseScheduleDto;
-import com.bookingbustickets.bookingbustickets.domain.enumeration.Role;
 import com.bookingbustickets.bookingbustickets.domain.model.Bus;
 import com.bookingbustickets.bookingbustickets.domain.model.Schedule;
 import com.bookingbustickets.bookingbustickets.domain.service.BusService;
 import com.bookingbustickets.bookingbustickets.domain.service.ScheduleService;
 import com.bookingbustickets.bookingbustickets.util.RoleBasedAccessHelper;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.core.SecurityContext;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -59,6 +57,7 @@ public class ScheduleController {
                 schedule.getDepartureTime(),
                 schedule.getArrivalTime(),
                 schedule.getRoute().getId(),
+                schedule.getBus().getId(),
                 schedule.getBus().getCompany().getCompanyName());
     }
     @GetMapping("/{id}")
@@ -70,6 +69,7 @@ public class ScheduleController {
                 schedule.getDepartureTime(),
                 schedule.getArrivalTime(),
                 schedule.getRoute().getId(),
+                schedule.getBus().getId(),
                 schedule.getBus().getCompany().getCompanyName());
     }
 
@@ -92,6 +92,7 @@ public class ScheduleController {
         createdSchedule.getDepartureTime(),
         createdSchedule.getArrivalTime(),
         createdSchedule.getRoute().getId(),
+        createdSchedule.getBus().getId(),
         createdSchedule.getBus().getCompany().getCompanyName());
   }
 
@@ -114,6 +115,7 @@ public class ScheduleController {
         updatedSchedule.getDepartureTime(),
         updatedSchedule.getArrivalTime(),
         updatedSchedule.getRoute().getId(),
+        updatedSchedule.getBus().getId(),
         updatedSchedule.getBus().getCompany().getCompanyName());
   }
 

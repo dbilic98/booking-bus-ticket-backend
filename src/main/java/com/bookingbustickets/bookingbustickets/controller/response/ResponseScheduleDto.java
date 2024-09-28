@@ -33,11 +33,24 @@ public class ResponseScheduleDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String companyName;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long busId;
+
     public ResponseScheduleDto(Long id, LocalDate scheduleDate, LocalTime departureTime, LocalTime arrivalTime, String companyName) {
         this.id = id;
         this.scheduleDate = scheduleDate;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
+        this.companyName = companyName;
+    }
+
+    public ResponseScheduleDto(Long id, LocalDate scheduleDate, LocalTime departureTime, LocalTime arrivalTime, Long routeId, Long busId, String companyName) {
+        this.id = id;
+        this.scheduleDate = scheduleDate;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.routeId = routeId;
+        this.busId = busId;
         this.companyName = companyName;
     }
 }
