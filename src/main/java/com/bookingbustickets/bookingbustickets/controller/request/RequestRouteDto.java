@@ -12,5 +12,4 @@ public record RequestRouteDto(
         @NotNull(message = "Base price is mandatory") @DecimalMin(value = "0.0", message = "Base price must be greater than or equal to 0.0") @DecimalMax(value = "100.0", message = "Base price cannot exceed 100.0") float basePrice,
         @NotNull(message = "Total distance is mandatory") @DecimalMin(value = "0.0", message = "Total distance must be greater than or equal to 0.0") @DecimalMax(value = "100000.0", message = "Total distance cannot exceed 100000.0") BigDecimal totalDistance,
         long startPlaceId, long endPlaceId, List<ResponseScheduleDto> scheduleList) {
-
 }

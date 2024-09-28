@@ -38,6 +38,4 @@ public class RoleBasedAccessHelper {
       throw new AccessDeniedException("Cannot manage resources for a different user.");
     }
   }
-
-
 }

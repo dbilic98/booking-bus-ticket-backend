@@ -24,7 +24,7 @@ public class PaymentService {
         SessionCreateParams.builder()
             .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
             .setMode(SessionCreateParams.Mode.PAYMENT)
-            .setSuccessUrl(CLIENT_BASE_URL + "/payment/success/" + paymentRequest.reservationId())
+            .setSuccessUrl(CLIENT_BASE_URL + "/payment/success/?id=" + paymentRequest.reservationId())
             .setCancelUrl(CLIENT_BASE_URL + "/payment/fail")
             .addAllLineItem(paymentRequest.orderData().stream().map(this::mapToLineItem).toList())
             .build();

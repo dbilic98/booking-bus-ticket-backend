@@ -34,11 +34,22 @@ public class RouteController {
     }
 
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','COMPANY')")
     public PaginatedResponse<ResponseRouteDto> getRoutes (
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "25") int pageSize) {
-        Page<Route> allRoutes = routeService.getAllRoutes(pageNumber, pageSize);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Page<Route> allRoutes;
+
+        if (RoleBasedAccessHelper.isAdmin(authentication)) {
+            allRoutes = routeService.getAllRoutes(pageNumber, pageSize);
+        } else if (RoleBasedAccessHelper.isCompany(authentication)) {
+            String companyId = authentication.getName();
+            allRoutes = routeService.getAllRoutesByCompany(UUID.fromString(companyId), pageNumber, pageSize);
+        } else {
+            throw new AccessDeniedException("Access is denied");
+        }
+
         Page<ResponseRouteDto> map = allRoutes.map(this::toResponseDto);
         return new PaginatedResponse<>(map);
     }

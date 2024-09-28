@@ -12,5 +12,6 @@ public class ResponseSeatDto {
     private Long id;
 
     private short seatNumber;
+
     private boolean isFree;
 }
