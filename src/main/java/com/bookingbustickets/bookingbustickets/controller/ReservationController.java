@@ -12,14 +12,12 @@ import com.bookingbustickets.bookingbustickets.util.RoleBasedAccessHelper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -34,42 +32,53 @@ public class ReservationController {
         this.userService = userService;
     }
 
-  @GetMapping
-  public PaginatedResponse<ResponseReservationDto> getReservations(
-      @RequestParam(defaultValue = "0") int pageNumber,
-      @RequestParam(defaultValue = "10") int pageSize) {
-    Page<Reservation> allReservations;
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (RoleBasedAccessHelper.isAdmin(authentication)) {
-      allReservations = reservationService.getAllReservations(pageNumber, pageSize);
-    } else if (RoleBasedAccessHelper.isCompany(authentication)) {
-      String companyId = authentication.getName();
-      allReservations =
-          reservationService.getAllReservationsByCompanyUuid(
-              pageNumber, pageSize, UUID.fromString(companyId));
-    } else if (RoleBasedAccessHelper.isClient(authentication)) {
-      String userUuid = authentication.getName();
-      allReservations =
-          reservationService.getAllReservationsByUserUuid(
-              pageNumber, pageSize, UUID.fromString(userUuid));
-    } else {
-      throw new AccessDeniedException("Access is denied");
-    }
-    Page<ResponseReservationDto> map = allReservations.map(this::toResponseDto);
-    return new PaginatedResponse<>(map);
-  }
+    @GetMapping
+    public PaginatedResponse<ResponseReservationDto> getReservations(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
 
-    private ResponseReservationDto toResponseDto(Reservation reservation) {
-        return new ResponseReservationDto(
-                reservation.getId(),
-                reservation.getDateOfReservation(),
-                reservation.getStatus());
+        Page<Reservation> allReservations;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (RoleBasedAccessHelper.isAdmin(authentication)) {
+            allReservations = reservationService.getAllReservations(pageNumber, pageSize);
+        } else if (RoleBasedAccessHelper.isCompany(authentication)) {
+            String companyId = authentication.getName();
+            allReservations =
+                    reservationService.getAllReservationsByCompanyUuid(
+                            pageNumber, pageSize, UUID.fromString(companyId));
+        } else if (RoleBasedAccessHelper.isClient(authentication)) {
+            String userUuid = authentication.getName();
+            allReservations =
+                    reservationService.getAllReservationsByUserUuid(
+                            pageNumber, pageSize, UUID.fromString(userUuid));
+        } else {
+            throw new AccessDeniedException("Access is denied");
+        }
+        Page<ResponseReservationDto> map = allReservations.map(this::toResponseDto);
+        return new PaginatedResponse<>(map);
     }
+
     @GetMapping("/{id}")
     public ResponseReservationDto findReservationById(@PathVariable Long id) {
         Reservation reservation = reservationService.findReservationById(id);
-        List<Ticket> tickets = reservation.getTickets();
+        return toResponseDto(reservation);
+    }
+
+    private ResponseReservationDto toResponseDto(Reservation reservation) {
+        List<ResponseTicketDto> responseTicketDtos = mapTicketsToResponseDtos(reservation.getTickets());
+
+        return new ResponseReservationDto(
+                reservation.getId(),
+                reservation.getDateOfReservation(),
+                reservation.getStatus(),
+                reservation.getUser().getFirstName(),
+                reservation.getUser().getLastName(),
+                responseTicketDtos);
+    }
+
+    private List<ResponseTicketDto> mapTicketsToResponseDtos(List<Ticket> tickets) {
         List<ResponseTicketDto> responseTicketDtos = new ArrayList<>();
+
         for (Ticket ticket : tickets) {
             ResponseTicketDto responseTicketDto = new ResponseTicketDto(
                     ticket.getId(),
@@ -84,13 +93,10 @@ public class ReservationController {
                     ticket.getReturnSeat() == null ? null : ticket.getReturnSeat().getId());
             responseTicketDtos.add(responseTicketDto);
         }
-        return new ResponseReservationDto(
-                reservation.getId(),
-                reservation.getDateOfReservation(),
-                reservation.getStatus(),
-                responseTicketDtos);
-    }
 
+        return responseTicketDtos;
+    }
+    
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseReservationDto createReservation() {

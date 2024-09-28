@@ -19,11 +19,9 @@ public class ResponseReservationDto {
 
     private ReservationStatus status;
 
-    private List<ResponseTicketDto> ticketList;
+    private String firstName;
 
-    public ResponseReservationDto(Long id, LocalDateTime dateOfReservation, ReservationStatus status) {
-        this.id = id;
-        this.dateOfReservation = dateOfReservation;
-        this.status = status;
-    }
+    private String lastName;
+
+    private List<ResponseTicketDto> ticketList;
 }
