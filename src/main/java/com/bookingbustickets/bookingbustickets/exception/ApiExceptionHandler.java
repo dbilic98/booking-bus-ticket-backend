@@ -2,6 +2,8 @@ package com.bookingbustickets.bookingbustickets.exception;
 
 import com.bookingbustickets.bookingbustickets.exception.response.ErrorResponse;
 import lombok.NonNull;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -39,6 +41,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         reasons.add(e.getMessage());
         ErrorResponse body = new ErrorResponse(reasons);
         return handleExceptionInternal(e, body, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class, ConstraintViolationException.class})
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(RuntimeException ex) {
+        List<String> reasons = new ArrayList<>();
+        reasons.add("You cannot delete this record because it is linked to other records in the system.");
+        ErrorResponse errorResponse = new ErrorResponse(reasons);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @Override
