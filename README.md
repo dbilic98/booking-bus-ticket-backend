@@ -1,4 +1,3 @@
-# booking-bus-ticket
 # Backend - Web aplikacija za rezervaciju karata
 
 Ovaj repozitorij sadrži backend dio aplikacije za pregled, rezervaciju i kupnju karata.  
